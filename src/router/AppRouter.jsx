@@ -10,11 +10,12 @@ import { useAuthStore } from '../hooks';
 export const AppRouter = () => {
 
     const { authenticated } = useAuthStore()
+    console.log(authenticated);
 
     return (
         <Routes>
             {
-                ( authenticated === authStatuses.notAuthenticated)  
+                ( authenticated === 'notAuthenticated')  
                     ? <Route path="/auth/*" element={ <LoginPage /> } />
                     : <Route path="/*" element={ <DashboardRoutes /> } />
             }

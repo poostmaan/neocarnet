@@ -1,1 +1,2 @@
-export * from './DashboardMainPage'
+export * from './MainPage'
+export * from './ControlPersons'
