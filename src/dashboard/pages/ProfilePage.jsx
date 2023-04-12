@@ -18,7 +18,7 @@ function getModuleContent(moduleName) {
 
 export const ProfilePage = () => {
 
-  const [activeModule, setActiveModule] = useState("services");
+  const [activeModule, setActiveModule] = useState("basicinformation");
 
   return (
     <DashboardLayout>
