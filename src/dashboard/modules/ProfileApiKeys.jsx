@@ -8,7 +8,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, fontWeight } from "@mui/system";
-import { Divider, Typography } from "@mui/material";
+import { Button, Divider, Grid, Typography } from "@mui/material";
+
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,11 +50,26 @@ export const ProfileApiKeys = () => {
         }}
       >
 
-        <Box sx={{
-          pb: 2,
-        }}>
-          <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>API Keys</Typography>
-        </Box>
+        <Grid
+          container
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{
+            mb: 2
+          }}
+        >
+          <Grid item>
+            <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>API Keys</Typography>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+            >
+              Agregar&nbsp;
+              <AddCircleIcon fontSize="small"/>
+            </Button>
+          </Grid>
+        </Grid> 
 
         <TableContainer component={Paper}>
           <Table aria-label="customized table">

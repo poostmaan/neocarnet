@@ -11,10 +11,12 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import SearchIcon from '@mui/icons-material/Search';
 
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -92,6 +94,8 @@ export const DashboardLayout = ({ children }) => {
     setOpen(!open);
   };
 
+  const bussinessName = "Macuto@info.com".toLocaleLowerCase();
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -122,13 +126,28 @@ export const DashboardLayout = ({ children }) => {
           >
             Dashboard
           </Typography>
+          
           <IconButton color="inherit">
+            <SearchIcon />
+          </IconButton>
+
+          <IconButton color="inherit" sx={{ mr: 2 }}>
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
+
+          <Typography
+            component="h5"
+            color="inherit"
+          >
+            Hola
+          </Typography>
+          &nbsp;
+          <Typography sx={{ fontWeight: 'bold'}}>{ bussinessName }</Typography>
           {true && (
             <div>
+              
               <IconButton
                 size="large"
                 aria-label="account of current user"

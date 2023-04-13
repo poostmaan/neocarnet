@@ -140,8 +140,8 @@ export const ProfileBasicInformation = () => {
             variant="contained"
             sx={{ mt: 3, ml: 1 }}
           >
-            {"GUARDAR"}
-            <SaveIcon />  
+            Guardar&nbsp;
+            <SaveIcon fontSize="small"/>  
           </Button>
         </Box>
       </Paper>
