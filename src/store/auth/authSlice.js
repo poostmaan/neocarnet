@@ -14,6 +14,7 @@ export const authSlice = createSlice({
       state.id = payload.id;
       state.bussinessName = payload.bussinessName;
       state.authenticated = authStatuses.authenticated;
+      state.errorMessage = "";
     },
     logout: (state) => {
       state.id = null;

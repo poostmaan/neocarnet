@@ -5,58 +5,59 @@ import axios from 'axios';
 
 export const useAuthStore = () => {
 
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    const {
-        authenticated,
-        bussinessName,
-        id,
-        errorMessage
-    } = useSelector(state => state.auth)
+	const {
+		authenticated,
+		bussinessName,
+		id,
+		errorMessage
+	} = useSelector(state => state.auth)
 
-    const startLogin = async (data) => {
-        dispatch(checking());
+	const startLogin = async (data) => {
+		dispatch(checking());
 
-        try {
+		try {
 
-            // TODO: Consultar con la api y validar los datos con el servidor
+			// TODO: Consultar con la api y validar los datos con el servidor
 
-            if (!data.email || !data.password) throw { errorMessage: "Se debe enviar un usuario y contraseña" }
-            if (!data.captcha) throw { errorMessage: "Debe completar el catcha de verificación" }
+			if (!data.email || !data.password) throw { errorMessage: "Se debe enviar un usuario y contraseña" }
+			if (!data.captcha || !data["g-recaptcha-response"]) throw { errorMessage: "Debe completar el catcha de verificación" }
 
-            console.log(data.captcha);
-            const validatedUser = await CarnetApi.post("api/bussiness/login", data);
+			console.log(data.captcha);
+			const validatedUser = await CarnetApi.post("api/bussiness/login", data);
 
-            console.log(validatedUser);
-            if (validatedUser.data.statusCode !== 201) throw { message: "asdsd" };
-            // console.log(email, password);
+			if (validatedUser.data.statusCode !== 201) throw { errorMessage: validatedUser.response.data.data.response };
 
-            const id = validatedUser.data.data[0].id;
-            const bussinessName = validatedUser.data.data[0].bussinessName;
-            dispatch(login({ id, bussinessName }))
-            dispatch(setError({ error: "" }));
-        } catch (error) {
-            console.log(error);
-            let message = error.errorMessage ?? "Algo salió mal, verifique e intente nuevamente";
-            dispatch(setError({ error: message }));
-            console.log('Error al logear' + error)
-        }
-    }
+			const id = validatedUser.data.data[0].id;
+			const bussinessName = validatedUser.data.data[0].bussinessName;
+			dispatch(login({ id, bussinessName }));
+		} catch (error) {
 
-    const startLogout = () => {
-        dispatch(logout())
-    }
+			let message = "";
 
-    return {
+			if (error.errorMessage) message = error.errorMessage;
+			else if (error.response.data.data.response) message = error.response.data.data.response;
+			else message = "Algo salió mal, verifique e intente nuevamente";
 
-        // ** Variables
-        authenticated,
-        bussinessName,
-        id,
-        errorMessage,
+			dispatch(setError({ error: message }));
+		}
+	}
 
-        // ** Metodos
-        startLogin,
-        startLogout,
-    }
+	const startLogout = () => {
+		dispatch(logout())
+	}
+
+	return {
+
+		// ** Variables
+		authenticated,
+		bussinessName,
+		id,
+		errorMessage,
+
+		// ** Metodos
+		startLogin,
+		startLogout,
+	}
 }
