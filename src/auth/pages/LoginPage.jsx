@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,46 +14,59 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useAuthStore } from '../../hooks';
-import axios from 'axios';
-
+// import Slide from '@mui/material';
+import { Snackbar, Slide, Alert } from '@mui/material';
 
 export const LoginPage = () => {
 
   const { startLogin, errorMessage } = useAuthStore();
-  const baseURL = "https://jsonplaceholder.typicode.com/posts";
-  // const [captchaValidate, setCatchaValidate] = React.useState(false);
-
-  // const captcha = useRef(null);
-
   const [validatedUser, setValidateUser] = useState(false);
-  const [post, setPost] = useState(null);
+  const [transition, setTransition] = useState(null)
+  const [open, setOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  function createPost() {
-    axios
-      .post(baseURL, {
-        title: "Hello World!",
-        body: "This is a new post."
-      })
-      .then((response) => {
-        console.log(response);
-        setPost(response.data);
-      });
-  }
 
   const handleSubmit = (event) => {
+
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries([...formData]);
     data.captcha = validatedUser;
+
     startLogin(data);
+    if (errorMessage) setOpen(true);
   };
 
-  const onChange = (value) => {
-    (value) ? setValidateUser(true) : false;
-  }
+  const handleClose = () => setOpen(false);
+  const TransitionDown = (props) => <Slide {...props} direction="left" />;
+  const onChange = (value) => (value) ? setValidateUser(true) : false;
+
+
+  useEffect(() => {
+    if (errorMessage === '') return
+    setTransition(() => TransitionDown);
+    setSnackbarMessage(errorMessage);
+    setOpen(true);
+  }, [errorMessage])
 
   return (
     <Container component="main" maxWidth="xs">
+      <Snackbar
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={transition}
+        key={transition ? transition.name : ''}
+        autoHideDuration={4000}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+      >
+        <Alert onClose={handleClose} elevation={6} variant="filled" severity="error" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <CssBaseline />
       <Box
         sx={{
@@ -70,7 +83,7 @@ export const LoginPage = () => {
           Control de acceso
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {errorMessage && <div>{errorMessage}</div>}
+          {/* {errorMessage && <div>{errorMessage}</div>} */}
           <TextField
             margin="normal"
             required
@@ -91,10 +104,6 @@ export const LoginPage = () => {
             id="password"
             autoComplete="current-password"
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Grid container sx={{ justifyContent: "center" }}>
             <ReCAPTCHA
               sitekey="6LcrMIYlAAAAAC3mrjBAezUwBoAy4kZwbdKm5dVS"

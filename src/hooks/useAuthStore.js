@@ -1,72 +1,77 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { checking, login, logout, error as setError } from '../store';
 import CarnetApi from '../api/CarnetApi';
-import axios from 'axios';
 
 export const useAuthStore = () => {
 
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    const {
-        authenticated,
-        bussinessName,
-        id,
-        errorMessage
-    } = useSelector(state => state.auth)
+	const {
+		authenticated,
+		bussinessName,
+		id,
+		errorMessage
+	} = useSelector(state => state.auth)
 
-    const startLogin = async (data) => {
-        
-        dispatch( checking() );
+	const startLogin = async (data) => {
 
-        try {
-            // TODO: Consultar con la api y validar los datos con el servidor
+		dispatch(checking());
 
-            if (!data.email || !data.password) throw { errorMessage: "Se debe enviar un usuario y contraseña" }
-            if (!data.captcha) throw { errorMessage: "Debe completar el catcha de verificación" }
+		try {
 
-            const validatedUser = await CarnetApi.post("/api/bussiness/login", data);
 
-            if (validatedUser.data.statusCode !== 201) throw { message: "asdsd" };
+			if (!data.email || !data.password) throw { errorMessage: "Se debe enviar un usuario y contraseña" }
+			if (!data.captcha || !data["g-recaptcha-response"]) throw { errorMessage: "Debe completar el catcha de verificación" }
 
-            const bussiness = validatedUser.data.data[0];
-            dispatch( login({ bussiness: bussiness }) )
-        } catch (error) {
-            let message = error.errorMessage ?? "Algo salió mal, verifique e intente nuevamente";
-            dispatch(setError({ error: message }));
-        }
-    }
+			const validatedUser = await CarnetApi.post("/api/bussiness/login", data);
 
-    const startRegister = async(data) => {
+			if (validatedUser.data.statusCode !== 201) throw { errorMessage: validatedUser.response.data.data.response };
 
-        dispatch( checking() );
+			const bussiness = validatedUser.data.data[0];
+			dispatch(login({ bussiness: bussiness }))
+		} catch (error) {
 
-        try {
-            const dataSaved = await CarnetApi.post('/api/bussiness/register', data);
-            delete data.password;
+			let message = "";
 
-            data.id = dataSaved.data.data.id;
+			if (error.errorMessage) message = error.errorMessage;
+			else if (error.response.data.data.response) message = error.response.data.data.response;
+			else message = "Algo salió mal, verifique e intente nuevamente";
 
-            dispatch( login({ bussiness: data }) )
-        } catch (error) {
-            dispatch( setError({ error }) );
-        }
-    }
+			dispatch(setError({ error: message }));
+		}
+	}
 
-    const startLogout = () => {
-        dispatch( logout() )
-    }
+	const startRegister = async (data) => {
 
-    return {
+		dispatch(checking());
 
-        // ** Variables
-        authenticated,
-        bussinessName,
-        id,
-        errorMessage,
+		try {
+			const dataSaved = await CarnetApi.post('/api/bussiness/register', data);
+			delete data.password;
 
-        // ** Metodos
-        startLogin,
-        startRegister,
-        startLogout,
-    }
+			data.id = dataSaved.data.data.id;
+
+			dispatch(login({ bussiness: data }))
+		} catch (error) {
+			dispatch(setError({ error }));
+		}
+	}
+
+	const startLogout = () => {
+		dispatch(logout())
+	}
+
+	return {
+
+		// ** Variables
+		authenticated,
+		bussinessName,
+		id,
+		errorMessage,
+
+		// ** Metodos
+		startLogin,
+		startRegister,
+		startLogout,
+	}
 }
