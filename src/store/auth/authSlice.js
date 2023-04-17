@@ -1,24 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authStatuses } from "../../constants";
 
+const defaultBussiness = {
+  id: null,
+  bussinessName: null,
+  rif: null,
+  phone: null,
+  email: null,
+  direction: null,
+  logourl: null,
+  bussinessType: null,
+  stateCountry: null,
+  latitude: null,
+  longitude: null,
+};
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
     authenticated: authStatuses.notAuthenticated,
-    bussinessName: null,
-    id: null,
+    bussiness: null,
     errorMessage: ""
   },
   reducers: {
     login: (state, { payload }) => {
-      state.id = payload.id;
-      state.bussinessName = payload.bussinessName;
+      state.bussiness = payload.bussiness;
       state.authenticated = authStatuses.authenticated;
       state.errorMessage = "";
     },
     logout: (state) => {
-      state.id = null;
-      state.bussinessName = null;
+      state.bussiness = null;
       state.authenticated = authStatuses.notAuthenticated;
     },
     checking: (state) => {
