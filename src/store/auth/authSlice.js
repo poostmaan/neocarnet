@@ -7,6 +7,7 @@ export const authSlice = createSlice({
     authenticated: authStatuses.notAuthenticated,
     bussinessName: null,
     id: null,
+    errorMessage: ""
   },
   reducers: {
     login: (state, { payload }) => {
@@ -22,7 +23,10 @@ export const authSlice = createSlice({
     checking: (state) => {
       state.authenticated = authStatuses.cheking;
     },
+    error: (state, { payload }) => {
+      state.errorMessage = payload.error
+    }
   },
 });
 
-export const { checking, login, logout } = authSlice.actions;
+export const { checking, login, logout, error } = authSlice.actions;

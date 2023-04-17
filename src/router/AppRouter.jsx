@@ -14,12 +14,12 @@ export const AppRouter = () => {
     return (
         <Routes>
             {
-                ( authenticated === 'notAuthenticated')  
-                    ? <Route path="/auth/*" element={ <AuthRoutes /> } />
-                    : <Route path="/*" element={ <DashboardRoutes /> } />
+                (authenticated !== 'authenticated')
+                    ? <Route path="/auth/*" element={<AuthRoutes />} />
+                    : <Route path="/*" element={<DashboardRoutes />} />
             }
 
-            <Route path="/*" element={ <Navigate to="/auth/login" /> } />
+            <Route path="/*" element={<Navigate to="/auth/login" />} />
         </Routes>
     )
 }

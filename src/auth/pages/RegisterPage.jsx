@@ -1,30 +1,39 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import { useState } from "react";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
+import {
+  FormHelperText,
+  Container,
+  Typography,
+  Box,
+  Grid,
+  CssBaseline,
+  Button,
+  Avatar,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Link
+} from '@mui/material';
 
 export function RegisterPage() {
+
+  const [filename, setFilename] = useState("");
+
+  const handleInputFile = (e) => {
+
+    if (!e.target.files) { return; }
+
+    const file = e.target.files[0];
+    const { name } = file;
+    setFilename('Nombre del archivo: ' + name);
+  }
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -49,18 +58,18 @@ export function RegisterPage() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Registro comercio
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
-                name="firstName"
+                autoComplete="businessName"
+                name="businessName"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="businessName"
+                label="Nombre comercial"
                 autoFocus
               />
             </Grid>
@@ -68,37 +77,108 @@ export function RegisterPage() {
               <TextField
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
+                id="rif"
+                label="R.I.F"
+                name="rif"
                 autoComplete="family-name"
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Contraseña"
                 type="password"
                 id="password"
                 autoComplete="new-password"
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirmar contraseña"
+                type="password"
+                id="confirmPassword"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Correo electrónico"
+                name="email"
+                autoComplete="email"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="phone"
+                label="Teléfono"
+                name="phone"
+                autoComplete="phone"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="direction"
+                label="Dirección"
+                name="direction"
+                autoComplete="direction"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button
+                component="label"
+                variant="outlined"
+                startIcon={<UploadFileOutlinedIcon />}
+                fullWidth
+              >
+                Subir logo
+                <input type="file" accept=".csv" hidden onChange={handleInputFile} />
+              </Button>
+              <FormHelperText sx={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "break-spaces" }}>{filename}</FormHelperText>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth required>
+                <InputLabel id="businessTypeLabel">Tipo de comercio</InputLabel>
+                <Select
+                  labelId="businessTypeLabel"
+                  label="Tipo de comercio *"
+                  id="businessType"
+                >
+                  <MenuItem value="comercio">Comercio 1</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth required>
+                <InputLabel id="stateCountryLabel">Estado</InputLabel>
+                <Select
+                  labelId="stateCountryLabel"
+                  label="Estado *"
+                  id="stateCountry"
+                >
+
+                  <MenuItem value="estado">Estado 1</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <input type="hidden" />
+              <input type="hidden" value />
+            </Grid>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                label="He leido y acepto los términos y condiciones."
               />
             </Grid>
           </Grid>
@@ -108,18 +188,17 @@ export function RegisterPage() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            Crear cuenta
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="#" variant="body2">
-                Already have an account? Sign in
+                ¿Ya tienes cuenta? Inicia sesión
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 5 }} />
     </Container>
   );
 }
