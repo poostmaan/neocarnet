@@ -1,9 +1,13 @@
-import { DashboardLayout } from '../layouts'
+import { Alert, AlertTitle } from "@mui/material";
+import { DashboardLayout } from "../layouts";
 
 export const MainPage = () => {
   return (
     <DashboardLayout>
-      <div>MainPage</div>
+      <Alert severity="success" color="primary" >
+        <AlertTitle>Bienvenido</AlertTitle>
+        Bienvenido de nuevo —
+      </Alert>
     </DashboardLayout>
-  )
-}
+  );
+};
