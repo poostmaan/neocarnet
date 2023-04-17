@@ -14,8 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useAuthStore } from '../../hooks';
-// import Slide from '@mui/material';
 import { Snackbar, Slide, Alert } from '@mui/material';
+import { AppLink } from '../../components';
 
 export const LoginPage = () => {
 
@@ -120,14 +120,12 @@ export const LoginPage = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              {/* <Link href="#" variant="body2">
                 ¿Olvidaste tu contraseña?
-              </Link>
+              </Link> */}
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                ¿No tienes cuenta? Regístrate aquí
-              </Link>
+              <AppLink path="/auth/register" label="¿No tienes cuenta? Regístrate" />
             </Grid>
           </Grid>
         </Box>
