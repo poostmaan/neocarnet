@@ -78,7 +78,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export const DashboardLayout = ({ children }) => {
-  const { startLogout } = useAuthStore();
+  const { startLogout, bussiness } = useAuthStore();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleMenu = (event) => {
@@ -94,7 +94,7 @@ export const DashboardLayout = ({ children }) => {
     setOpen(!open);
   };
 
-  const bussinessName = "Macuto@info.com".toLocaleLowerCase();
+  const bussinessName = bussiness.bussinessName;
 
   return (
     <Box sx={{ display: "flex" }}>
