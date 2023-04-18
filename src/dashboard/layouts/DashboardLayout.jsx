@@ -24,7 +24,7 @@ import { mainListItems } from "../components";
 import { useAuthStore } from "../../hooks";
 
 import { Link } from '@mui/material';
-import { AppLink } from "../../components";
+import { AppLink, DefaultSnackbar } from "../../components";
 // import Chart from "./Chart";
 // import Deposits from "./Deposits";
 // import Orders from "./Orders";
@@ -98,6 +98,7 @@ export const DashboardLayout = ({ children }) => {
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/* <DefaultSnackbar message="Has iniciado sesión" alertType="success" /> */}
       <CssBaseline />
       <AppBar position="absolute" open={open}>
         <Toolbar

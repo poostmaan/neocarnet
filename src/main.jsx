@@ -10,11 +10,11 @@ import './styles.css';
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store  }>
         <BrowserRouter>
           <CarnetApp />
         </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 )

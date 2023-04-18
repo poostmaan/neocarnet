@@ -15,19 +15,17 @@ import Container from '@mui/material/Container';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useAuthStore } from '../../hooks';
 import { Snackbar, Slide, Alert } from '@mui/material';
-import { AppLink } from '../../components';
+import { AppLink, DefaultSnackbar } from '../../components';
 
 export const LoginPage = () => {
 
   const { startLogin, errorMessage } = useAuthStore();
   const [validatedUser, setValidateUser] = useState(false);
-  const [transition, setTransition] = useState(null)
+  const onChange = (value) => (value) ? setValidateUser(true) : false;
+  
   const [open, setOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-
 
   const handleSubmit = (event) => {
-
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -35,38 +33,16 @@ export const LoginPage = () => {
     data.captcha = validatedUser;
 
     startLogin(data);
-    if (errorMessage) setOpen(true);
   };
 
-  const handleClose = () => setOpen(false);
-  const TransitionDown = (props) => <Slide {...props} direction="left" />;
-  const onChange = (value) => (value) ? setValidateUser(true) : false;
-
-
-  useEffect(() => {
-    if (errorMessage === '') return
-    setTransition(() => TransitionDown);
-    setSnackbarMessage(errorMessage);
-    setOpen(true);
-  }, [errorMessage])
+  // useEffect(() => {
+  //   if (errorMessage === '') return;
+  //   setOpen(true);
+  // }, [errorMessage])
 
   return (
     <Container component="main" maxWidth="xs">
-      <Snackbar
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={transition}
-        key={transition ? transition.name : ''}
-        autoHideDuration={4000}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-      >
-        <Alert onClose={handleClose} elevation={6} variant="filled" severity="error" sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      <DefaultSnackbar message={errorMessage}/>
       <CssBaseline />
       <Box
         sx={{
@@ -80,7 +56,7 @@ export const LoginPage = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Control de acceso
+          Iniciar sesión
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           {/* {errorMessage && <div>{errorMessage}</div>} */}

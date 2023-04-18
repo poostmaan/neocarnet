@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { checking, login, logout, error as setError } from '../store';
+import { checking, login, logout, error as setError, cleanError } from '../store';
 import CarnetApi from '../api/CarnetApi';
 
 export const useAuthStore = () => {
@@ -8,8 +8,7 @@ export const useAuthStore = () => {
 
 	const {
 		authenticated,
-		bussinessName,
-		id,
+		bussiness,
 		errorMessage
 	} = useSelector(state => state.auth)
 
@@ -53,25 +52,30 @@ export const useAuthStore = () => {
 
 			dispatch(login({ bussiness: data }))
 		} catch (error) {
-			dispatch(setError({ error }));
+			let errorMessage = error.response.data.data.response 
+			dispatch(setError({ error: errorMessage }));
 		}
 	}
 
+	const cleanErrorMessage = () => {
+		dispatch( cleanError() );
+	}
+
 	const startLogout = () => {
-		dispatch(logout())
+		dispatch( logout() )
 	}
 
 	return {
 
 		// ** Variables
 		authenticated,
-		bussinessName,
-		id,
+		bussiness,
 		errorMessage,
 
 		// ** Metodos
 		startLogin,
 		startRegister,
 		startLogout,
+		cleanErrorMessage,
 	}
 }
