@@ -1,7 +1,8 @@
 export const getEnvVariables = () => {
-    import.meta.env
+    // import.meta.env
+    // ! CUALQUIER NUEVA VARIABLE DEBE SER IMPORTADA Y EXPORTADA DE LA SIGUIENTE FORMA
 
     return {
-        ...import.meta.env
+        VITE_BASEURL: import.meta.env.VITE_BASEURL
     }
 }
