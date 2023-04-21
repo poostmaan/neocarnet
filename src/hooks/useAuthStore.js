@@ -24,9 +24,9 @@ export const useAuthStore = () => {
 
 			const validatedUser = await CarnetApi.post("/api/bussiness/login", data);
 
-			if (validatedUser.data.statusCode !== 201) throw { errorMessage: validatedUser.response.data.data.response };
+			// if (validatedUser.data.statusCode !== 201) throw { errorMessage: validatedUser.response.data.data.response };
 
-			const bussiness = validatedUser.data.data[0];
+			const bussiness = validatedUser.data.data;
 			dispatch(login({ bussiness: bussiness }))
 		} catch (error) {
 
