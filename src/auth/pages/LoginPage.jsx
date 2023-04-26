@@ -75,7 +75,7 @@ export const LoginPage = () => {
             required
             fullWidth
             name="password"
-            label="Cotraseña"
+            label="Contraseña"
             type="password"
             id="password"
             autoComplete="current-password"

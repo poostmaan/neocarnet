@@ -11,6 +11,8 @@ export const AppRouter = () => {
 
     const { authenticated } = useAuthStore()
 
+    if(authenticated === "checking") return <h1>Loading, please wait...</h1>
+
     return (
         <Routes>
             {

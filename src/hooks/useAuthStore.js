@@ -57,6 +57,20 @@ export const useAuthStore = () => {
 		}
 	}
 
+	const startUpdating = async (data) => {
+		dispatch(checking()); 
+ 
+		try {
+			const dataSaved = await CarnetApi.put(`/api/bussiness/${ bussiness.id }`, data);
+
+			dispatch( login({ bussiness: data }) ) 
+			
+		} catch (error) {
+			let errorMessage = error.response.data.data.response 
+			dispatch(setError({ error: errorMessage }));
+		}
+	}
+
 	const cleanErrorMessage = () => {
 		dispatch( cleanError() );
 	}
@@ -76,6 +90,7 @@ export const useAuthStore = () => {
 		startLogin,
 		startRegister,
 		startLogout,
+		startUpdating,
 		cleanErrorMessage,
 	}
 }
