@@ -47,12 +47,15 @@ const formData = {
 
 export const ProfileBasicInformation = () => { 
   
-  const { bussiness } =  useAuthStore();
+  const { bussiness, startUpdating } =  useAuthStore();
   const theme = useTheme();
   const [logourl, setLogourl] = useState(bussiness.logourl);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const {
+    formState,
+
     bussinessName,
     rif,
     phone,
@@ -65,7 +68,7 @@ export const ProfileBasicInformation = () => {
     emailValid,
 
     onInputChange,
-    formSubmitted
+    isFormValid
   } = useForm(bussiness, formValidation);
   
   const handleChange = (e) => {
@@ -81,12 +84,27 @@ export const ProfileBasicInformation = () => {
     reader.readAsDataURL(file);
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('dede')
+    setFormSubmitted(true);
+    if( !isFormValid ) return;
+    formState.logourl = selectedFile
+    startUpdating( formState );
+
+  }
+
   return (
     <>
+      <Box
+        component="form"
+        noValidate
+        onSubmit={ handleSubmit }
+      > 
       <Paper
         elevation={2}
         sx={{ 
-          my: { xs: 3, md: 2 }, 
+          my: { xs: 3, md: 2 },  
           p: { xs: 2, md: 3 },
           borderRadius: '10px'  
         }}
@@ -225,6 +243,7 @@ export const ProfileBasicInformation = () => {
 
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
+            type="submit"
             variant="contained"
             sx={{ mt: 3, ml: 1 }}
           >
@@ -233,6 +252,7 @@ export const ProfileBasicInformation = () => {
           </Button>
         </Box>
       </Paper>
+      </Box>
     </>
   )
 }
