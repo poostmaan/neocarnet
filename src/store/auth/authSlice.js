@@ -20,13 +20,15 @@ export const authSlice = createSlice({
   initialState: {
     authenticated: authStatuses.notAuthenticated,
     bussiness: null,
-    errorMessage: ""
+    errorMessage: "",
+    bussinessPersons: []
   },
   reducers: {
     login: (state, { payload }) => {
       state.bussiness = payload.bussiness;
       state.authenticated = authStatuses.authenticated;
       state.errorMessage = "";
+      state.bussinessPersons = payload.bussiness.bussinessPersons;
     },
     logout: (state) => {
       state.bussiness = null;
@@ -37,8 +39,14 @@ export const authSlice = createSlice({
     },
     error: (state, { payload }) => {
       state.errorMessage = payload.error
+    },
+    cleanError: (state) => {
+      state.errorMessage = "";
+    },
+    setPersons: (state, { payload }) => {
+      state.bussinessPersons = payload.bussinessPersons;
     }
   },
 });
 
-export const { checking, login, logout, error } = authSlice.actions;
+export const { checking, login, logout, error, cleanError, setPersons } = authSlice.actions;
