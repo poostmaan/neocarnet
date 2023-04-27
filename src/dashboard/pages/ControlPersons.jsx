@@ -1,76 +1,302 @@
 import { DashboardLayout } from '../layouts';
-import { useState } from "react";
+import React, { useState } from "react";
 import SendIcon from '@mui/icons-material/Send';
 import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
 import { FormHelperText, Container, Typography, Box, Grid, CssBaseline, Button, Avatar } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import MUIDataTable from 'mui-datatables';
+import { useAuthStore } from '../../hooks';
+import MUIModal from '../components/MUIModal';
+
+import ContentModal from '../components/ContentModal';
+// import DataTable from 'react-data-table-component';
+// import CustomMaterialPagination from '../components/CustomMaterialPagination';
+
+// import TablePaginationDemo from '../components/CustomMaterialPagination';
 
 const theme = createTheme();
 
 export function ControlPersons() {
 
-  const [filename, setFilename] = useState("");
+  const { bussinessPersons } = useAuthStore();
 
-  const handleInputFile = (e) => {
+  const state = {
+    downloadFile: true,
+  };
 
-    if (!e.target.files) {
-      return;
+  const columns = [
+    {
+      name: "credential",
+      label: "Cédula"
+    }, {
+      name: "name",
+      label: "Nombre completo"
+    },
+    {
+      name: "phone",
+      label: "Teléfono"
+    },
+    {
+      name: "email",
+      label: "Correo electrónico"
     }
+  ];
 
-    const file = e.target.files[0];
-    const { name } = file;
-    setFilename('Nombre del archivo: ' + name);
-  }
+  console.log(bussinessPersons);
+
+
+  const options = {
+    filter: true,
+    filterType: 'dropdown',
+    responsive: 'vertical',
+    rowsPerPage: 10,
+    selectableRows: false,
+    downloadOptions: {
+      filename: 'excel-format.csv',
+      separator: ';',
+      filterOptions: {
+        useDisplayedColumnsOnly: true,
+        useDisplayedRowsOnly: true,
+      }
+    },
+    textLabels: {
+      body: {
+        noMatch: "Disculpa no se consiguieron registros",
+      },
+      pagination: {
+        next: "Siguiente página",
+        previous: "Anterior página"
+      },
+      filter: {
+        all: "Todos los registros",
+        title: "Todos los filtros",
+        reset: "Resetear filtros",
+      },
+      selectedRows: {
+        text: "Registro ha sido eliminado",
+        delete: "Delete Row",
+        deleteAria: "Deleted Selected Rows"
+      },
+    },
+    onDownload: (buildHead, buildBody, columns, data) => {
+      if (state.downloadFile) {
+        let val = `${buildHead(columns)}${buildBody(data)}`.trim();
+        return val;
+      }
+
+      return false;
+    },
+    onRowSelectionChange: (currentRowsSelected, allRows, rowsSelected) => {
+      console.log(currentRowsSelected, allRows, rowsSelected);
+    },
+    onRowsDelete: rowsDeleted => {
+      console.log(rowsDeleted, 'were deleted!');
+    },
+    onChangePage: numberRows => {
+      console.log(numberRows);
+    },
+    onSearchChange: searchText => {
+      console.log(searchText);
+    },
+    onColumnSortChange: (column, direction) => {
+      console.log(column, direction);
+    },
+    onViewColumnsChange: (column, action) => {
+      console.log(column, action);
+    },
+    onFilterChange: (column, filters) => {
+      console.log(column, filters);
+    },
+    onCellClick: (cellIndex, rowIndex) => {
+      console.log(cellIndex, rowIndex);
+    },
+    onRowClick: (rowData, rowState) => {
+      console.log(rowData, rowState);
+    },
+  };
 
   return (
     <DashboardLayout>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <PersonAddIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Cargar personas
-          </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} sx={{ wordBreak: 'break-word' }}>
-                {filename}
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <Button
-                  component="label"
-                  variant="outlined"
-                  startIcon={<UploadFileOutlinedIcon />}
-                  fullWidth
-                >
-                  Subir archivo CSV
-                  <input type="file" accept=".csv" hidden onChange={handleInputFile} />
-                </Button>
-                <FormHelperText>Nota: Solo se permiten archivos CSV (Comma Separated Values) y utilizando el formato especificiado. <a href='#'>Click aquí para descargar el formato</a></FormHelperText>
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              startIcon={<SendIcon />}
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Enviar archivo
-            </Button>
-          </Box>
-        </Box>
-      </Container>
+      <Grid container sx={{ justifyContent: "flex-end", alignItems: "flex-end" }}>
+        <Grid>
+          <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />}>
+            <ContentModal />
+          </MUIModal>
+        </Grid>
+      </Grid>
+      <MUIDataTable title={'Personas en el sistema'} data={bussinessPersons} columns={columns} options={options} />
     </DashboardLayout>
   );
+
+
+
+  // export default Example;
 }
+
+// export function ControlPersons() {
+
+//   const [filename, setFilename] = useState("");
+
+//   const handleInputFile = (e) => {
+
+//     if (!e.target.files) {
+//       return;
+//     }
+
+//     const file = e.target.files[0];
+//     const { name } = file;
+//     setFilename('Nombre del archivo: ' + name);
+//   }
+
+//   const columns = [
+//     {
+//       name: 'Title',
+//       selector: row => row.title,
+//     },
+//     {
+//       name: 'Year',
+//       selector: row => row.year,
+//       sortable: true
+//     },
+//   ];
+//   const data = [
+//     {
+//       id: 1,
+//       title: 'Beetlejuice',
+//       year: '1988',
+//     },
+//     {
+//       id: 2,
+//       title: 'Ghostbusters',
+//       year: '1984',
+//     },
+//     {
+//       id: 3,
+//       title: 'Beetlejuice',
+//       year: '1988',
+//     },
+//     {
+//       id: 4,
+//       title: 'Ghostbusters',
+//       year: '1984',
+//     },
+//     {
+//       id: 5,
+//       title: 'Beetlejuice',
+//       year: '1988',
+//     },
+//     {
+//       id: 6,
+//       title: 'Ghostbusters',
+//       year: '1984',
+//     },
+//     {
+//       id: 7,
+//       title: 'Beetlejuice',
+//       year: '1988',
+//     },
+//     {
+//       id: 8,
+//       title: 'Ghostbusters',
+//       year: '1984',
+//     },
+//     {
+//       id: 9,
+//       title: 'Beetlejuice',
+//       year: '1988',
+//     },
+//     {
+//       id: 10,
+//       title: 'Ghostbusters',
+//       year: '1984',
+//     },
+//     {
+//       id: 11,
+//       title: 'Beetlejuice',
+//       year: '1988',
+//     }
+//   ];
+
+//   function convertArrayOfObjectsToCSV(array) {
+//     let result;
+
+//     const columnDelimiter = ',';
+//     const lineDelimiter = '\n';
+//     const keys = Object.keys(data[0]);
+
+//     result = '';
+//     result += keys.join(columnDelimiter);
+//     result += lineDelimiter;
+
+//     array.forEach(item => {
+//       let ctr = 0;
+//       keys.forEach(key => {
+//         if (ctr > 0) result += columnDelimiter;
+
+//         result += item[key];
+//         // eslint-disable-next-line no-plusplus
+//         ctr++;
+//       });
+//       result += lineDelimiter;
+//     });
+
+//     return result;
+//   }
+
+//   // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
+//   function downloadCSV(array) {
+//     const link = document.createElement('a');
+//     let csv = convertArrayOfObjectsToCSV(array);
+//     if (csv == null) return;
+
+//     const filename = 'export.csv';
+
+//     if (!csv.match(/^data:text\/csv/i)) {
+//       csv = `data:text/csv;charset=utf-8,${csv}`;
+//     }
+
+//     link.setAttribute('href', encodeURI(csv));
+//     link.setAttribute('download', filename);
+//     link.click();
+//   }
+
+//   // eslint-disable-next-line react/prop-types
+//   const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Export</Button>;
+
+//   const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
+
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+//   const handlePageChange = (page) => {
+//     setCurrentPage(page);
+//   };
+
+//   const handleRowsPerPageChange = (rowsPerPage) => {
+//     setRowsPerPage(rowsPerPage);
+//     setCurrentPage(1);
+//   };
+
+//   const paginatedData = data.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
+//   return (
+//     <DashboardLayout>
+
+//       <DataTable
+//         columns={columns}
+//         data={paginatedData}
+//         actions={actionsMemo}
+//         subHeader
+//         subHeaderAlign="right"
+//       />
+//       <CustomMaterialPagination
+//         totalRows={data.length}
+//         rowsPerPage={rowsPerPage}
+//         currentPage={currentPage}
+//         onPageChange={handlePageChange}
+//         onRowsPerPageChange={handleRowsPerPageChange}
+//       />
+//     </DashboardLayout>
+//   );
+// }

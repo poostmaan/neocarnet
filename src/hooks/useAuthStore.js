@@ -9,7 +9,8 @@ export const useAuthStore = () => {
 	const {
 		authenticated,
 		bussiness,
-		errorMessage
+		errorMessage,
+		bussinessPersons
 	} = useSelector(state => state.auth)
 
 	const startLogin = async (data) => {
@@ -26,7 +27,11 @@ export const useAuthStore = () => {
 
 			// if (validatedUser.data.statusCode !== 201) throw { errorMessage: validatedUser.response.data.data.response };
 
+			const bussinessPersons = await CarnetApi.get(`/api/bussiness/${validatedUser.data.data.id}/persons`)
+
+
 			const bussiness = validatedUser.data.data;
+			bussiness.bussinessPersons = bussinessPersons.data.data;
 			dispatch(login({ bussiness: bussiness }))
 		} catch (error) {
 
@@ -52,31 +57,53 @@ export const useAuthStore = () => {
 
 			dispatch(login({ bussiness: data }))
 		} catch (error) {
-			let errorMessage = error.response.data.data.response 
+			let errorMessage = error.response.data.data.response
 			dispatch(setError({ error: errorMessage }));
 		}
 	}
 
 	const startUpdating = async (data) => {
-		dispatch(checking()); 
- 
-		try {
-			const dataSaved = await CarnetApi.put(`/api/bussiness/${ bussiness.id }`, data);
+		dispatch(checking());
 
-			dispatch( login({ bussiness: data }) ) 
-			
+		try {
+			const dataSaved = await CarnetApi.put(`/api/bussiness/${bussiness.id}`, data);
+
+			dispatch(login({ bussiness: data }))
+
 		} catch (error) {
-			let errorMessage = error.response.data.data.response 
+			let errorMessage = error.response.data.data.response
 			dispatch(setError({ error: errorMessage }));
 		}
 	}
 
 	const cleanErrorMessage = () => {
-		dispatch( cleanError() );
+		dispatch(cleanError());
 	}
 
 	const startLogout = () => {
-		dispatch( logout() )
+		dispatch(logout())
+	}
+
+	const uploadPersons = async (data) => {
+
+		dispatch(checking());
+
+		try {
+
+			const LocalApi = axios.create({
+				baseURL: "http://127.0.0.1:8080/neoCARNETSLocal"
+			})
+
+			const dataSaved = await CarnetApi.post('', data);
+			delete data.password;
+
+			data.id = dataSaved.data.data.id;
+
+			dispatch(login({ bussiness: data }))
+		} catch (error) {
+			let errorMessage = error.response.data.data.response
+			dispatch(setError({ error: errorMessage }));
+		}
 	}
 
 	return {
@@ -85,6 +112,7 @@ export const useAuthStore = () => {
 		authenticated,
 		bussiness,
 		errorMessage,
+		bussinessPersons,
 
 		// ** Metodos
 		startLogin,
@@ -92,5 +120,6 @@ export const useAuthStore = () => {
 		startLogout,
 		startUpdating,
 		cleanErrorMessage,
+		uploadPersons
 	}
 }
