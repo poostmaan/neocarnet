@@ -42,14 +42,15 @@ const formData = {
   latitude: "",
   longitude: "",
   password: "",
-  repassword: ""
+  repassword: "",
+  logourl: "",
 }
 
 export const ProfileBasicInformation = () => { 
   
   const { bussiness, startUpdating } =  useAuthStore();
   const theme = useTheme();
-  const [logourl, setLogourl] = useState(bussiness.logourl);
+  // const [logourl, setLogourl] = useState(bussiness.logourl);
   const [selectedFile, setSelectedFile] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -61,6 +62,7 @@ export const ProfileBasicInformation = () => {
     phone,
     email,
     direction,
+    logourl,
 
     bussinessNameValid,
     rifValid,
@@ -71,27 +73,38 @@ export const ProfileBasicInformation = () => {
     isFormValid
   } = useForm(bussiness, formValidation);
   
-  const handleChange = (e) => {
-    console.log(e.target.files[0]);
-    let file = e.target.files[0];
-    setSelectedFile(file);
-    const reader = new FileReader();
+  // const handleChange = (e) => {
+  //   let dedaw= e.target
+  //   console.log({dedaw})
+  //   console.log(e.target.type + "dawda");
+  //   console.log(e.target.files[0]);
+  //   let file = e.target.files[0];
+  //   setSelectedFile(file);
+  //   const reader = new FileReader();
 
-    reader.onload = (event) => {
-      setLogourl( event.target.result);
-    };
+  //   reader.onload = (event) => {
+  //     setLogourl( event.target.result);
+  //   };
 
-    reader.readAsDataURL(file);
-  }
+  //   reader.readAsDataURL(file);
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('dede')
-    setFormSubmitted(true);
+    setFormSubmitted(true); 
     if( !isFormValid ) return;
-    formState.logourl = selectedFile
-    startUpdating( formState );
 
+    const data = new FormData(e.target);
+    const dataForm = {
+      bussinessName: data.get('bussinessName'),
+      rif: data.get('rif'),
+      phone: data.get('phone'),
+      email: data.get('email'),
+      direction: data.get('direction'),
+      logourl: data.get('logourl'),
+    };
+
+    startUpdating( dataForm ); 
   }
 
   return (
@@ -137,8 +150,15 @@ export const ProfileBasicInformation = () => {
           <Box className="MuiBox-root css-71p4a3">
             <Badge badgeContent={
               <label htmlFor="icon-button-file">
-                <input accept="image/*" id="icon-button-file" type="file" style={{ display: 'none' }} onChange={handleChange}/>
-                <IconButton color="primary" aria-label="upload picture" component="span" sx={{ backgroundColor: theme.palette.secondary.main, "&:hover": {backgroundColor: theme.palette.secondary.main } }} disableHoverListener>
+                <input 
+                  accept="image/*" 
+                  id="icon-button-file" 
+                  name="logourl" 
+                  type="file" 
+                  style={{ display: 'none' }} 
+                  onChange={ onInputChange }
+                />
+                <IconButton color="primary" aria-label="upload picture" component="span" sx={{ backgroundColor: theme.palette.secondary.main, "&:hover": {backgroundColor: theme.palette.secondary.main } }}>
                   <CameraAlt />
                 </IconButton>
               </label>

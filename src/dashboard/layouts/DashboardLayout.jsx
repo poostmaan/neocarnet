@@ -128,7 +128,7 @@ export const DashboardLayout = ({ children }) => {
             Dashboard
           </Typography>
           
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <SearchIcon />
           </IconButton>
 
@@ -136,7 +136,7 @@ export const DashboardLayout = ({ children }) => {
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
 
           <Typography
             component="h5"

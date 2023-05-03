@@ -5,13 +5,14 @@ import { DashboardRoutes } from '../dashboard/routes';
 
 import { authStatuses } from '../constants';
 import { useAuthStore } from '../hooks';
+import { Loading } from '../components';
 
 
 export const AppRouter = () => {
 
     const { authenticated } = useAuthStore()
 
-    if(authenticated === "checking") return <h1>Loading, please wait...</h1>
+    if(authenticated === "checking") return <Loading />
 
     return (
         <Routes>
