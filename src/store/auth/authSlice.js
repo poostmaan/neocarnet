@@ -21,14 +21,16 @@ export const authSlice = createSlice({
     authenticated: authStatuses.notAuthenticated,
     bussiness: null,
     errorMessage: "",
-    bussinessPersons: []
+    bussinessPersons: [],
+    uploadedPeople: "",
+    uploadedSucessfully: "",
+    uploadedFailed: ""
   },
   reducers: {
     login: (state, { payload }) => {
       state.bussiness = payload.bussiness;
       state.authenticated = authStatuses.authenticated;
       state.errorMessage = "";
-      state.bussinessPersons = payload.bussiness.bussinessPersons;
     },
     logout: (state) => {
       state.bussiness = null;
@@ -43,10 +45,23 @@ export const authSlice = createSlice({
     cleanError: (state) => {
       state.errorMessage = "";
     },
+    setBussinessPersons: (state, { payload }) => {
+      state.bussinessPersons = payload.bussinessPersons;
+    },
     setPersons: (state, { payload }) => {
       state.bussinessPersons = payload.bussinessPersons;
+    },
+    uploadPeople: (state, { payload }) => {
+      state.uploadedPeople = payload.uploadedPeople;
+      state.uploadedSucessfully = payload.uploadedPeople.match(/Registro insertado exitosamente/ig) && payload.uploadedPeople.match(/Registro insertado exitosamente/ig).length;
+      state.uploadedFailed = payload.uploadedPeople.match(/Registro no insertado/ig) && payload.uploadedPeople.match(/Registro no insertado/ig).length;
+    },
+    cleanPeople: (state) => {
+      state.uploadedPeople = "";
+      state.uploadedSucessfully = "";
+      state.uploadedFailed = "";
     }
   },
 });
 
-export const { checking, login, logout, error, cleanError, setPersons } = authSlice.actions;
+export const { checking, login, logout, error, cleanError, setPersons, setBussinessPersons,uploadPeople, cleanPeople } = authSlice.actions;

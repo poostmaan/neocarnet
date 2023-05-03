@@ -1,25 +1,19 @@
 import { DashboardLayout } from '../layouts';
 import React, { useState } from "react";
-import SendIcon from '@mui/icons-material/Send';
-import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
-import { FormHelperText, Container, Typography, Box, Grid, CssBaseline, Button, Avatar } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Grid } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MUIDataTable from 'mui-datatables';
-import { useAuthStore } from '../../hooks';
-import MUIModal from '../components/MUIModal';
-
+import { useAuthStore, usePersons } from '../../hooks';
+import MUIModal from '../components/MuiModal';
 import ContentModal from '../components/ContentModal';
-// import DataTable from 'react-data-table-component';
-// import CustomMaterialPagination from '../components/CustomMaterialPagination';
 
-// import TablePaginationDemo from '../components/CustomMaterialPagination';
 
 const theme = createTheme();
 
 export function ControlPersons() {
 
-  const { bussinessPersons } = useAuthStore();
+  const { bussinessPersons } = usePersons();
 
   const state = {
     downloadFile: true,
@@ -62,21 +56,36 @@ export function ControlPersons() {
     },
     textLabels: {
       body: {
-        noMatch: "Disculpa no se consiguieron registros",
+        noMatch: "Lo sentimos, no se encontraron registros",
+        toolTip: "Ordenar",
+        columnHeaderTooltip: column => `Ordenar por ${column.label}`
       },
       pagination: {
-        next: "Siguiente página",
-        previous: "Anterior página"
+        next: "Siguiente",
+        previous: "Anterior",
+        rowsPerPage: "Filas por página:",
+        displayRows: "de"
+      },
+      toolbar: {
+        search: "Buscar",
+        downloadCsv: "Descargar CSV",
+        print: "Imprimir",
+        viewColumns: "Ver columnas",
+        filterTable: "Filtrar tabla"
       },
       filter: {
-        all: "Todos los registros",
-        title: "Todos los filtros",
-        reset: "Resetear filtros",
+        all: "Todos",
+        title: "FILTROS",
+        reset: "RESETEAR"
+      },
+      viewColumns: {
+        title: "Mostrar columnas",
+        titleAria: "Mostrar/Ocultar columnas",
       },
       selectedRows: {
-        text: "Registro ha sido eliminado",
-        delete: "Delete Row",
-        deleteAria: "Deleted Selected Rows"
+        text: "fila(s) seleccionada(s)",
+        delete: "Eliminar",
+        deleteAria: "Eliminar filas seleccionadas",
       },
     },
     onDownload: (buildHead, buildBody, columns, data) => {

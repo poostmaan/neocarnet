@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { checking, login, logout, error as setError, cleanError } from '../store';
+import { checking, login, logout, error as setError } from '../store';
 import CarnetApi from '../api/CarnetApi';
+import axios from 'axios';
 
 export const useAuthStore = () => {
 
@@ -9,8 +10,7 @@ export const useAuthStore = () => {
 	const {
 		authenticated,
 		bussiness,
-		errorMessage,
-		bussinessPersons
+		errorMessage
 	} = useSelector(state => state.auth)
 
 	const startLogin = async (data) => {
@@ -25,14 +25,8 @@ export const useAuthStore = () => {
 
 			const validatedUser = await CarnetApi.post("/api/bussiness/login", data);
 
-			// if (validatedUser.data.statusCode !== 201) throw { errorMessage: validatedUser.response.data.data.response };
-
-			const bussinessPersons = await CarnetApi.get(`/api/bussiness/${validatedUser.data.data.id}/persons`)
-
-
 			const bussiness = validatedUser.data.data;
-			bussiness.bussinessPersons = bussinessPersons.data.data;
-			dispatch(login({ bussiness: bussiness }))
+			dispatch(login({ bussiness }));
 		} catch (error) {
 
 			let message = "";
@@ -62,34 +56,8 @@ export const useAuthStore = () => {
 		}
 	}
 
-	const cleanErrorMessage = () => {
-		dispatch(cleanError());
-	}
-
 	const startLogout = () => {
 		dispatch(logout())
-	}
-
-	const uploadPersons = async (data) => {
-
-		dispatch(checking());
-
-		try {
-
-			const LocalApi = axios.create({
-				baseURL: "http://127.0.0.1:8080/neoCARNETSLocal"
-			})
-
-			const dataSaved = await CarnetApi.post('', data);
-			delete data.password;
-
-			data.id = dataSaved.data.data.id;
-
-			dispatch(login({ bussiness: data }))
-		} catch (error) {
-			let errorMessage = error.response.data.data.response
-			dispatch(setError({ error: errorMessage }));
-		}
 	}
 
 	return {
@@ -98,13 +66,10 @@ export const useAuthStore = () => {
 		authenticated,
 		bussiness,
 		errorMessage,
-		bussinessPersons,
 
 		// ** Metodos
 		startLogin,
 		startRegister,
 		startLogout,
-		cleanErrorMessage,
-		uploadPersons
 	}
 }
