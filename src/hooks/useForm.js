@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-
+/**
+ * 
+ * @param {object} initialForm 
+ * @param {object} formValidations 
+ * @returns variables and methos
+ */
 export const useForm = ( initialForm = {}, formValidations = {}) => {
   
     const [ formState, setFormState ] = useState( initialForm );
@@ -25,7 +30,27 @@ export const useForm = ( initialForm = {}, formValidations = {}) => {
 
 
     const onInputChange = ({ target }) => {
-        const { name, value } = target;
+        let { name, value } = target;
+
+        if(target.type === "file") {
+            let file = target.files[0]
+
+            const reader = new FileReader(); 
+
+            reader.onload = (event) => {
+                value = event.target.result
+                console.log(value)
+                setFormState({
+                    ...formState,
+                    [ name ]: value
+                });
+            };
+
+            reader.readAsDataURL(file); 
+
+            return;
+        }
+
         setFormState({
             ...formState,
             [ name ]: value

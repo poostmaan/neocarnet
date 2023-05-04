@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,9 +8,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, fontWeight } from "@mui/system";
-import { Button, Divider, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Divider, Grid, IconButton, Typography } from "@mui/material";
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useApikeyStore, useAuthStore } from "../../hooks";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,6 +41,33 @@ const rows = [
 ];
 
 export const ProfileApiKeys = () => {
+
+  const { bussiness } = useAuthStore();
+  const [loading, setLoading] = useState(false);
+
+  const { 
+    startLoadingApikeys, 
+    startDeletingApikey,
+    startSaveApikey, 
+    apikeys 
+  } = useApikeyStore();
+
+  useEffect(() => {
+    startLoadingApikeys(bussiness.id); 
+  }, [apikeys])
+
+  const handleNewApiKey = async() => {
+    setLoading(true);
+    const apikey = await startSaveApikey(bussiness.id);
+    console.log(apikey)
+    if(!!apikey) {
+      startLoadingApikeys(bussiness.id); 
+    }
+
+    setLoading(false);
+  }
+  
+
   return (
     <>
       <Paper
@@ -64,6 +94,8 @@ export const ProfileApiKeys = () => {
           <Grid item>
             <Button
               variant="contained"
+              disabled={loading}
+              onClick={handleNewApiKey}
             >
               Agregar&nbsp;
               <AddCircleIcon fontSize="small"/>
@@ -85,20 +117,36 @@ export const ProfileApiKeys = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.name}>
+              {apikeys.map((row) => (
+                <StyledTableRow key={row.id}>
                   <StyledTableCell component="th" scope="row">
-                    {row.name}
+                    {row.tag}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {row.calories}
+                    {row.content}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                  <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                  <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                  <StyledTableCell align="right">{row.created}</StyledTableCell>
+                  <StyledTableCell align="right">{row.status}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    <IconButton onClick={ () => startDeletingApikey(bussiness.id, row.id) }>
+                      <DeleteIcon /> 
+                    </IconButton>
+                  </StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
+            { apikeys.length == 0 &&
+            
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Grid item>
+                  <Typography variant="subtitle2">No hay Api Key generada</Typography>
+                </Grid>
+              </Grid>
+            }
           </Table>
         </TableContainer>
       </Paper>

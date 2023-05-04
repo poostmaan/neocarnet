@@ -56,6 +56,28 @@ export const useAuthStore = () => {
 		}
 	}
 
+	const startUpdating = async (data) => {
+		if(!data) return;
+		dispatch(checking());
+
+		try {
+
+			const dataSaved = await CarnetApi.post(`/api/bussiness/${bussiness.id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      let bussinessUpdated = dataSaved.data.data  
+
+			dispatch(login({ bussiness: bussinessUpdated })) 
+
+		} catch (error) {
+      console.log(error)
+			dispatch(setError({ error: "algo salio mal" }));
+		}
+	}
+
 	const startLogout = () => {
 		dispatch(logout())
 	}
@@ -71,5 +93,6 @@ export const useAuthStore = () => {
 		startLogin,
 		startRegister,
 		startLogout,
+		startUpdating,
 	}
 }

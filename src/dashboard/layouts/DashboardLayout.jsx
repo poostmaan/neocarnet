@@ -24,7 +24,7 @@ import { mainListItems } from "../components";
 import { useAuthStore } from "../../hooks";
 
 import { Link } from '@mui/material';
-import { AppLink } from "../../components";
+import { AppLink, DefaultSnackbar } from "../../components";
 // import Chart from "./Chart";
 // import Deposits from "./Deposits";
 // import Orders from "./Orders";
@@ -78,7 +78,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export const DashboardLayout = ({ children }) => {
-  const { startLogout } = useAuthStore();
+  const { startLogout, bussiness } = useAuthStore();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleMenu = (event) => {
@@ -94,10 +94,11 @@ export const DashboardLayout = ({ children }) => {
     setOpen(!open);
   };
 
-  const bussinessName = "Macuto@info.com".toLocaleLowerCase();
+  const bussinessName = bussiness.bussinessName;
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/* <DefaultSnackbar message="Has iniciado sesión" alertType="success" /> */}
       <CssBaseline />
       <AppBar position="absolute" open={open}>
         <Toolbar
@@ -127,7 +128,7 @@ export const DashboardLayout = ({ children }) => {
             Dashboard
           </Typography>
           
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <SearchIcon />
           </IconButton>
 
@@ -135,7 +136,7 @@ export const DashboardLayout = ({ children }) => {
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
 
           <Typography
             component="h5"

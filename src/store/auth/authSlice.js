@@ -39,6 +39,9 @@ export const authSlice = createSlice({
     checking: (state) => {
       state.authenticated = authStatuses.cheking;
     },
+    cleanError: (state) => {
+      state.errorMessage = "";
+    },
     error: (state, { payload }) => {
       state.errorMessage = payload.error
     },
@@ -64,4 +67,11 @@ export const authSlice = createSlice({
   },
 });
 
-export const { checking, login, logout, error, cleanError, setPersons, setBussinessPersons,uploadPeople, cleanPeople } = authSlice.actions;
+export const {
+  checking,
+  cleanError,
+  error,
+  login,
+  logout,
+  setPersons, setBussinessPersons,uploadPeople, cleanPeople
+} = authSlice.actions;
