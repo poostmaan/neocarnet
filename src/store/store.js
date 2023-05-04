@@ -9,6 +9,7 @@ const persistConfig = {
     key: 'root',
     storage,
 }
+import { personsSlice } from './persons/';
 
 const authPersistedReducer = persistReducer(persistConfig, authSlice.reducer);
 const apikeyPersistReducer = (persistConfig, apikeySlice.reducer);
@@ -16,7 +17,8 @@ const apikeyPersistReducer = (persistConfig, apikeySlice.reducer);
 export const store = configureStore({
     reducer: {
         auth: authPersistedReducer,
-        apikey: apikeyPersistReducer
+        apikey: apikeyPersistReducer,
+        persons: personsSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false
