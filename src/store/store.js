@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { uiSlice } from './';
 import { authSlice } from './auth/';
 import storage from 'redux-persist/lib/storage';
@@ -12,12 +12,14 @@ const persistConfig = {
 import { personsSlice } from './persons/';
 
 const authPersistedReducer = persistReducer(persistConfig, authSlice.reducer);
-const apikeyPersistReducer = (persistConfig, apikeySlice.reducer);
+// const apikeyPersistReducer = (persistConfig, apikeySlice.reducer);
+
+// const rootReducer = combineReducers()
 
 export const store = configureStore({
     reducer: {
         auth: authPersistedReducer,
-        apikey: apikeyPersistReducer,
+        apikey: apikeySlice.reducer, 
         persons: personsSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
