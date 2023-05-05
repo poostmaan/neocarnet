@@ -36,12 +36,12 @@ export const usePersons = () => {
 		dispatch(setLoading());
 
 		try {
-			console.log("asddd");
-			const LocalApi = axios.create({
-				baseURL: "http://127.0.0.1:8080/neoCARNETSLocal"
-			})
+			// console.log("asddd");
+			// const LocalApi = axios.create({
+			// 	baseURL: "http://127.0.0.1:8080/neoCARNETSLocal"
+			// })
 
-			const dataSaved = await LocalApi.post('/test/api/uploadPeople.php', data);
+			const dataSaved = await CarnetApi.post('/excel/uploadPeople.php', data);
 			const refreshData = await CarnetApi.get(`/api/bussiness/${bussinessId}/persons`)
 
 			dispatch(cleanError());

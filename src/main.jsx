@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { CarnetApp } from './CarnetApp';
 import { persistor ,store } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
-import './styles.css';
+import './main.css';
 
 const root = createRoot(document.getElementById('root'));
 

@@ -1,5 +1,5 @@
 /* Modal */
-.ReactModalPortal > div{
+/* .ReactModalPortal > div{
   opacity: 0;
 }
 
@@ -40,7 +40,7 @@
 }
 
 /* FABS */
-.fab {
+/* .fab {
   border-radius: 100%;
   bottom: 25px;
   font-size: 30px;
@@ -57,4 +57,14 @@
   left: 25px;
   width: 70px;
   height: 70px;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif !important
+}
+
+html {
+  /* overflow-y: hidden; */
 }
