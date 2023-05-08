@@ -1,12 +1,12 @@
 import { Business } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import CarnetApi from "../api/CarnetApi";
-import { deleteApikey, setApikeys, setErrorMessage, setLoading } from "../store";
+import { deleteApikey, setApikey, setApikeys, setErrorMessage, setLoading } from "../store";
 
 export const useApikeyStore = () => {
   const dispatch = useDispatch();
 
-  const { apikeys, loading, errorMessage } = useSelector((state) => state.apikey);
+  const { newApikey, deletedApikey, apikeys, loading, errorMessage } = useSelector((state) => state.apikey);
 
   const startLoadingApikeys = async (bussinessid) => {
 
@@ -33,13 +33,11 @@ export const useApikeyStore = () => {
 
     try {
       const apikey = await CarnetApi.post(`/api/bussiness/${bussinessid}/apikey`);
-
-      return apikey.data.data;
+      dispatch( setApikey({ apikey: apikey.data.data}) );
 
     } catch (error) {
-      let errorMessage = error.response.data.data.response
-      dispatch(setErrorMessage({errorMessage}))
-      return null;
+      let errorMessage = error.response.data.response;
+      dispatch(setErrorMessage({errorMessage}));
     }
   }
 
@@ -55,7 +53,7 @@ export const useApikeyStore = () => {
       dispatch( deleteApikey({ apikey: idapikey }) );
 
     } catch(error) {
-      let errorMessage = error.response.data.data.response
+      let errorMessage = error.response.data.response
 
       dispatch(setErrorMessage({errorMessage}))
 
@@ -65,9 +63,11 @@ export const useApikeyStore = () => {
 
   return {
     // * Variables
+    newApikey,
     apikeys, 
     errorMessage, 
     loading,
+    deletedApikey,
 
     // * Methods
 

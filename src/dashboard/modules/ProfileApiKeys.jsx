@@ -7,12 +7,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, fontWeight } from "@mui/system";
-import { Button, CircularProgress, Divider, Grid, IconButton, Typography } from "@mui/material";
+import { Button, Grid, IconButton, Typography } from "@mui/material";
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useApikeyStore, useAuthStore } from "../../hooks";
+import { DefaultSnackbar } from "../../components/DefaultSnackbar";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -26,50 +26,39 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Real ApiKey ", "fftt456765gjkkjhi83093985", "Nov 12, 2021", "Active", "Borrar"),
-];
 
 export const ProfileApiKeys = () => {
 
   const { bussiness } = useAuthStore();
-  const [loading, setLoading] = useState(false);
 
   const { 
+    loading,
+    errorMessage,
+    deletedApikey,
     startLoadingApikeys, 
     startDeletingApikey,
     startSaveApikey, 
-    apikeys 
+    newApikey,
+    apikeys,
   } = useApikeyStore();
 
   useEffect(() => {
     startLoadingApikeys(bussiness.id); 
-  }, [apikeys])
+  }, [newApikey, deletedApikey])  
 
-  const handleNewApiKey = async() => {
-    setLoading(true);
-    const apikey = await startSaveApikey(bussiness.id);
-    console.log(apikey)
-    if(!!apikey) {
-      startLoadingApikeys(bussiness.id); 
-    }
-
-    setLoading(false);
+  const handleNewApiKey = () => {
+    startSaveApikey(bussiness.id);
   }
   
 
   return (
     <>
+      <DefaultSnackbar message={errorMessage} />
       <Paper
         variant="elevation"
         elevation={2}

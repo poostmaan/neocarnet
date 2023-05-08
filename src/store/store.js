@@ -1,32 +1,29 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { uiSlice } from './';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authSlice } from './auth/';
-import storage from 'redux-persist/lib/storage';
+import storageSession from 'redux-persist/lib/storage/session'
 import { persistReducer, persistStore } from 'redux-persist';
 import { apikeySlice } from './apikey';
 import { personsSlice } from './persons/';
 
 const persistConfig = {
     key: 'root',
-    storage,
+    storage: storageSession,
 }
 
-const authPersistedReducer = persistReducer(persistConfig, authSlice.reducer);
-const apikeyPersistReducer = (persistConfig, apikeySlice.reducer);
-const personsPersistReducer = persistReducer(persistConfig,personsSlice.reducer);
+const rootReducer = combineReducers({
 
-// const rootReducer = combineReducers()
+    auth: authSlice.reducer,
+    apikey: apikeySlice.reducer, 
+    persons: personsSlice.reducer,
 
-// const rootReducer = combineReducers()
+})
 
-export const store = configureStore({
-    reducer: {
-        auth: authPersistedReducer,
-        apikey: apikeyPersistReducer,
-        persons: personsPersistReducer
-    },
+const finalReducer = persistReducer(persistConfig, rootReducer); 
+
+export const store = configureStore({ 
+    reducer: finalReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        serializableCheck: false
+        serializableCheck: false    
     })
 })
 

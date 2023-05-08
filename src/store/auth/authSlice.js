@@ -43,6 +43,7 @@ export const authSlice = createSlice({
       state.errorMessage = "";
     },
     error: (state, { payload }) => {
+      state.authenticated = authStatuses.notAuthenticated;
       state.errorMessage = payload.error
     },
     cleanError: (state) => {

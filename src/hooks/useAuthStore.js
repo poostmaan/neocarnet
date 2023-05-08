@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { checking, login, logout, error as setError } from '../store';
 import CarnetApi from '../api/CarnetApi';
-import axios from 'axios';
-
 export const useAuthStore = () => {
 
 	const dispatch = useDispatch();
@@ -15,7 +13,7 @@ export const useAuthStore = () => {
 
 	const startLogin = async (data) => {
 
-		dispatch(checking());
+		dispatch(checking()); 
 
 		try {
 
