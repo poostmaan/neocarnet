@@ -21,7 +21,7 @@ export const ProfilePage = () => {
   const [activeModule, setActiveModule] = useState("basicinformation");
 
   return (
-    <DashboardLayout>
+    <DashboardLayout nameModule={"Perfil"}>
       <Grid container>
         <Grid item md={4}>
           <Paper

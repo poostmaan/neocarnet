@@ -126,7 +126,7 @@ export function ControlPersons() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout nameModule={"Personas"}>
       <Grid container sx={{ justifyContent: "flex-end", alignItems: "flex-end", mb: 2 }}>
         <Grid>
           <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />}>

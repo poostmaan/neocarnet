@@ -77,7 +77,7 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-export const DashboardLayout = ({ children }) => {
+export const DashboardLayout = ({ children, nameModule }) => {
   const { startLogout, bussiness } = useAuthStore();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -125,7 +125,7 @@ export const DashboardLayout = ({ children }) => {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
+           {nameModule} - NEOCarnets
           </Typography>
           
           {/* <IconButton color="inherit">
