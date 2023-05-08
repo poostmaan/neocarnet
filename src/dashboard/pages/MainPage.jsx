@@ -15,7 +15,7 @@ export const MainPage = () => {
   
 
   return (
-    <DashboardLayout>
+    <DashboardLayout nameModule={"Dashboard"}>
       <Alert severity="success" color="primary" >
         <AlertTitle>Bienvenido</AlertTitle>
         Bienvenido de nuevo —
