@@ -12,7 +12,7 @@ export const DefaultSnackbar = ({ handleClose, message, close, alertType = "erro
   }, [])
 
   useEffect(() => {
-    if (message === '' || message === null) return; 
+    if (message === '') return;
     setOpen(true);
   }, [message])
 
