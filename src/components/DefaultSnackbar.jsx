@@ -12,8 +12,8 @@ export const DefaultSnackbar = ({ handleClose, message, close, alertType = "erro
   }, [])
 
   useEffect(() => {
-    if (message === '') return;
-    setOpen(true);
+    if (message === '') return; 
+    setOpen(false);
   }, [message])
 
   return (
