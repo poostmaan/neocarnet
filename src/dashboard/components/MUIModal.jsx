@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { usePersons } from "../../hooks";
+import { ContentModalWrapper } from "./ContentModalWrapper";
 
 const MUIModal = ({ children, buttonName, modalTitle = "", icon }) => {
 
@@ -41,37 +42,41 @@ const MUIModal = ({ children, buttonName, modalTitle = "", icon }) => {
 				closeAfterTransition
 			>
 				<Fade in={open}>
-					<Grid containers
-						style={{
-							backgroundColor: "#fff",
-							padding: "24px",
-							borderRadius: "4px",
-							position: "absolute",
-							top: "50%",
-							left: "50%",
-							transform: "translate(-50%, -50%)",
-							overflowY: "auto",
-							maxHeight: "80vh"
-						}}
-					>
-						<Typography variant="h5" component="h2" gutterBottom>
-							{modalTitle}
-						</Typography>
-						<IconButton
-							aria-label="close"
-							onClick={handleClose}
-							sx={{
+					<ContentModalWrapper>
+						<Grid containers
+              className="modalContainer"
+							style={{
+								backgroundColor: "#fff",
+								padding: "24px",
+								borderRadius: "4px",
 								position: "absolute",
-								top: 8,
-								right: 8,
+								top: "50%",
+								left: "50%",
+								transform: "translate(-50%, -50%)",
+								overflowY: "auto",
+								maxHeight: "80vh",
+								width: "100%"
 							}}
 						>
-							<CloseIcon />
-						</IconButton>
-						<Typography variant="body1" gutterBottom>
-							{children}
-						</Typography>
-					</Grid>
+							<Typography variant="h5" component="h2" gutterBottom>
+								{modalTitle}
+							</Typography>
+							<IconButton
+								aria-label="close"
+								onClick={handleClose}
+								sx={{
+									position: "absolute",
+									top: 8,
+									right: 8,
+								}}
+							>
+								<CloseIcon />
+							</IconButton>
+							<Typography variant="body1" gutterBottom>
+								{children}
+							</Typography>
+						</Grid>
+					</ContentModalWrapper>
 				</Fade>
 			</Modal>
 		</>
