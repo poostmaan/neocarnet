@@ -23,9 +23,9 @@ function initCanvas() {
     console.log(textsInstances);
   }
 
-  function changeText(option, canvas) {
+  function changeText(option, canvas, value = '') {
 
-    console.log(activeText)
+    console.log(activeText, value)
 
     if(activeText === '') {
       console.log('no hay nada seleccionado')
@@ -36,7 +36,7 @@ function initCanvas() {
       'bold': {'fontWeight': 'bold'},
       'italic': {'fontStyle': 'italic'},
       'underline': {'underline': true},
-      'fontSize': {},
+      'fontSelector': {'fontFamily': value}
     }
 
     // newText = canvas.getItemById(activeText);
@@ -104,6 +104,11 @@ function initCanvas() {
     value.addEventListener('click', () => changeText(key, canvas))
   }
 
+  document.querySelector('#fontSelector')
+    .addEventListener('change', () => {
+      changeText("fontSelector", canvas, document.querySelector('#fontSelector').value)
+    }
+  );
 
   toSvgBtn.addEventListener("click", ()=> console.log(canvas.toSVG()))
 
