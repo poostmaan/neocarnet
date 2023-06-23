@@ -23,10 +23,13 @@ function initCanvas() {
     console.log(textsInstances);
   }
 
-  function changeText(option) {
+  function changeText(option, canvas) {
+
+    console.log(activeText)
 
     if(activeText === '') {
       console.log('no hay nada seleccionado')
+      return; 
     }
 
     const obj = {
@@ -36,11 +39,22 @@ function initCanvas() {
       'fontSize': {},
     }
 
-    newText = canvas.getItemById(activeText);
+    // newText = canvas.getItemById(activeText);
+
+    // Obtener todos los objetos del lienzo
+    var objects = canvas.getObjects();
+
+    // Filtrar los objetos y encontrar el objeto por su identificador
+    var myText = objects.find(function(object) {
+      return object.id === activeText;
+    });
 
     const prop = obj[option] || {}
 
-    newText.set(prop);  
+    console.log(myText)
+
+    myText.set(prop);  
+    canvas.renderAll();
   }
 
   let activeText = '';
@@ -83,12 +97,11 @@ function initCanvas() {
     bold: document.querySelector('#bold'),
     italic: document.querySelector('#italic'),
     underline: document.querySelector('#underline'),
-    fontSize: document.querySelector('#fontsize'),
   }
 
   for (let [key, value] of Object.entries(textOptions)) {
     console.log(value)
-    value.addEventListener('click', changeText(key))
+    value.addEventListener('click', () => changeText(key, canvas))
   }
 
 

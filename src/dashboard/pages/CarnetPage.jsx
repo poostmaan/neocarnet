@@ -64,24 +64,6 @@ export const CarnetPage = () => {
             <button id="bold">Bold</button>
             <button id="italic">Italic</button>
             <button id="underline">Underline</button>
-            <select id="fontsize">
-              <option value="">Tamaño de letra</option>
-              <option value="8">8px</option>
-              <option value="10">10px</option>
-              <option value="12">12px</option>
-              <option value="14">14px</option>
-              <option value="16">16px</option>
-              <option value="18">18px</option>
-              <option value="20">20px</option>
-              <option value="24">24px</option>
-              <option value="28">28px</option>
-              <option value="32">32px</option>
-              <option value="36">36px</option>
-              <option value="40">40px</option>
-              <option value="48">48px</option>
-              <option value="56">56px</option>
-              <option value="64">64px</option>
-            </select>
             <Box sx={{
               height: "500px",
               width: "318px",
