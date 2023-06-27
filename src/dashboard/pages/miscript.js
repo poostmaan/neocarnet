@@ -18,14 +18,9 @@ function initCanvas() {
     })
 
     canvas.add(...textsInstances);
-
-
-    console.log(textsInstances);
   }
 
   function changeText(option, canvas, value = '') {
-
-    console.log(activeText, value)
 
     if(activeText === '') {
       console.log('no hay nada seleccionado')
@@ -57,6 +52,13 @@ function initCanvas() {
     canvas.renderAll();
   }
 
+  function setCanvasImage(img) {
+    canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+      scaleX: canvas.width / img.width,
+      scaleY: canvas.height / img.height,
+    });
+  }
+
   let activeText = '';
 
   var canvas = new fabric.Canvas("design");
@@ -64,15 +66,6 @@ function initCanvas() {
 
   // TODO: DEBEN SER EXTRAIDOS DE LA BASE DE DATOS
   const texts = addText(["nombre", "cedula", "accion"]);
-
-  var imgElement = document.getElementById("my-image");
-  var imgInstance = new fabric.Image(imgElement, {
-    left: 0,
-    top: 0,
-    angle: 0,
-    opacity: 0.85,
-  });
-  canvas.setBackgroundImage(imgInstance, canvas.renderAll.bind(canvas));
 
   let addBackgroundbtn = document.getElementById("addBackgroundbtn");
   let toSvgBtn = document.getElementById("toSvgBtn");
@@ -83,11 +76,7 @@ function initCanvas() {
     reader.onload = function (f) {
       var data = f.target.result;
       fabric.Image.fromURL(data, function (img) {
-        // add background image
-        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-          scaleX: canvas.width / img.width,
-          scaleY: canvas.height / img.height,
-        });
+        setCanvasImage(img)
       });
     };
     reader.readAsDataURL(file);
@@ -100,7 +89,6 @@ function initCanvas() {
   }
 
   for (let [key, value] of Object.entries(textOptions)) {
-    console.log(value)
     value.addEventListener('click', () => changeText(key, canvas))
   }
 
@@ -110,54 +98,22 @@ function initCanvas() {
     }
   );
 
-  toSvgBtn.addEventListener("click", ()=> console.log(canvas.toSVG()))
+  // toSvgBtn.addEventListener("click", () => {
+  //   console.log( canvas.toSVG );
+  // })
 
+  function saveToSvg() {
+    return canvas.toSVG();
+  }
+  /** Cambiar fondo template */
 
-  // var group = $('group'),
-  //     ungroup = $('ungroup'),
-  //     multiselect = $('multiselect'),
-  //     addmore = $('addmore'),
-  //     discard = $('discard');
+  document.querySelectorAll(".carnetTemplates").forEach(el => el.addEventListener('click', function(e) {
+    let imgInstance = new fabric.Image(this, {});
 
-  //     addmore.onclick = add;
+    setCanvasImage(imgInstance);
+  }))
 
-  //     multiselect.onclick = function() {
-  //       canvas.discardActiveObject();
-  //       var sel = new fabric.ActiveSelection(canvas.getObjects(), {
-  //         canvas: canvas,
-  //       });
-  //       canvas.setActiveObject(sel);
-  //       canvas.requestRenderAll();
-  //     }
-
-  //     group.onclick = function() {
-  //       if (!canvas.getActiveObject()) {
-  //         return;
-  //       }
-  //       if (canvas.getActiveObject().type !== 'activeSelection') {
-  //         return;
-  //       }
-  //       canvas.getActiveObject().toGroup();
-  //       canvas.requestRenderAll();
-  //     }
-
-  //     ungroup.onclick = function() {
-  //       if (!canvas.getActiveObject()) {
-  //         return;
-  //       }
-  //       if (canvas.getActiveObject().type !== 'group') {
-  //         return;
-  //       }
-  //       canvas.getActiveObject().toActiveSelection();
-  //       canvas.requestRenderAll();
-  //     }
-
-  //     discard.onclick = function() {
-  //       canvas.discardActiveObject();
-  //       canvas.requestRenderAll();
-  //     }
-
-  //         document.body.innerText =canvas.toSVG();
+  
 }
 
 export { initCanvas };
