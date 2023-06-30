@@ -4,6 +4,7 @@ export const carnetSlice = createSlice({
 	name: "carnets",
 	initialState: {
 		activeCarnet: {},
+		fields: [], 
 		loading: false,
 		errorMessage: null,
 	},
@@ -18,6 +19,9 @@ export const carnetSlice = createSlice({
 		},
 		setLoading: (state) => {
 			state.loading = true;
+		},
+		setFields: (state, { payload }) => {
+			state.fields = payload.fields;
 		}
 	},
 });
@@ -25,5 +29,6 @@ export const carnetSlice = createSlice({
 export const { 
     setActiveCarnet,
     setErrorMessage,
-    setLoading
+    setLoading,
+	setFields
 } = carnetSlice.actions;

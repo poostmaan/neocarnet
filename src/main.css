@@ -76,3 +76,9 @@ html {
 .carnetTemplates {
   margin: 0 3px;
 }
+
+.chip-active {
+  background-color: #0205a1e8 !important;
+  color: white !important;
+  cursor: pointer;
+}

@@ -1,11 +1,12 @@
 import { DashboardLayout } from "../layouts";
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
-import { Box, Grid, Chip, Button, Typography } from "@mui/material";
+import { Box, Grid, Button, Typography } from "@mui/material";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import StayPrimaryLandscapeIcon from "@mui/icons-material/StayPrimaryLandscape";
 import StayPrimaryPortraitIcon from "@mui/icons-material/StayPrimaryPortrait";
 import { useCarnetStore } from '../../hooks';
+import { ChipFields } from "../components";
 // import { initCanvas } from "./miscript";
 
 export const CarnetPage = () => {
@@ -16,14 +17,22 @@ export const CarnetPage = () => {
   const {
     startSavingCarnet,
     startLoadingCarnet,
-    activeCarnet
+    activeCarnet,
+    currentFields 
   } = useCarnetStore();
 
-  const handleDelete = () => {
-    console.info("You clicked the delete icon.");
-  };
+  //** Extraer de algun lado */
+  const fields = ["nombre", "cedula", "accion"];
+  const fieldsInUse = activeCarnet?.fields?.split(",") || []; 
+  console.log({ fieldsInUse })
 
   const [svg, setSvg] = useState({})
+
+  const handleExportSvg = () => {
+    const { svgCode, json } = svg;
+    let fields = currentFields.toString();
+    startSavingCarnet({ contentsvg: svgCode, contentjson: json, fields })
+  }
 
   useEffect(() => {
     startLoadingCarnet();
@@ -50,6 +59,23 @@ export const CarnetPage = () => {
       })
   
       canvas.add(...textsInstances);
+    }
+
+    function removeText(texts = []) {
+
+      const textObjects = texts.map(text => {
+        var objects = canvas.getObjects();
+  
+      // Filtrar los objetos y encontrar el objeto por su identificador
+        var myText = objects.find(function(object) {
+          return object.id === text;
+        });
+
+        canvas.remove(myText);
+      });
+
+
+      canvas.renderAll();
     }
   
     function changeText(option, canvas, value = '') {
@@ -91,6 +117,23 @@ export const CarnetPage = () => {
         scaleY: canvas.height / img.height,
       });
     }
+
+    function toggleField(field) {
+      console.log(field)
+      const elem = document.getElementById(field)
+      if(!elem) return;
+      console.log(elem)
+
+      elem.addEventListener("click", function() {
+        if([...this.classList].includes("chip-active")) {
+          removeText([elem.textContent], canvas);
+          this.classList.remove('chip-active');
+        } else {
+          addText([elem.textContent])
+          this.classList.add('chip-active'); 
+        }
+      })
+    }
   
     let activeText = '';
   
@@ -98,6 +141,8 @@ export const CarnetPage = () => {
     fabric.Object.prototype.transparentCorners = false;
 
     if(activeCarnet.id) {
+
+      // ! Codigo para cargar en el canvas un SVG
 
       // fabric.loadSVGFromString(activeCarnet.content, (objects, options) => {
       //   const svgObject = fabric.util.groupSVGElements(objects, options);
@@ -113,9 +158,25 @@ export const CarnetPage = () => {
       // });
 
       canvas.loadFromJSON(activeCarnet.contentjson);
+
+      const objects = canvas.getObjects();
+      const textObjects = objects.filter(obj => obj.type === 'text');
+
+      textObjects.forEach((obj) => {
+        if (obj.type === 'text') { 
+          obj.set('id', obj.text);
+        }
+      });
+
+      textObjects.forEach(textInstance => {
+        return textInstance.on('mousedown', function(options) {
+          activeText = options.target.id;
+        });
+      })
+
     } else {
       // TODO: DEBEN SER EXTRAIDOS DE LA BASE DE DATOS
-      const texts = addText(["nombre", "cedula", "accion"]);
+      // const texts = addText(["nombre", "cedula", "accion"]);
   
       let rect = new fabric.Rect({
         left: 100,    // Posición izquierda del rectángulo
@@ -166,7 +227,9 @@ export const CarnetPage = () => {
     for (let [key, value] of Object.entries(textOptions)) {
       value.addEventListener('click', () => changeText(key, canvas))
     }
-  
+
+    fields.forEach(field => toggleField(field));
+    
     // * Cambiar la fuente
     document.querySelector('#fontSelector')
       .addEventListener('change', () => {
@@ -197,14 +260,9 @@ export const CarnetPage = () => {
   
       setCanvasImage(imgInstance);
     }))
-  
+   
     
   }, [])
-  
-  const handleExportSvg = () => {
-    const { svgCode, json } = svg
-    startSavingCarnet({ contentsvg: svgCode, contentjson: json, fields: "nombre,accion,cedula" })
-  }
 
   return (
     <DashboardLayout>
@@ -304,9 +362,13 @@ export const CarnetPage = () => {
           <Box
             sx={{mb: 1}}
           >
-            <Chip label="cedula" onDelete={handleDelete} color="primary" />
-            <Chip label="nombre" onDelete={handleDelete}  color="primary" />
-            <Chip label="accion" onDelete={handleDelete}  color="primary" />
+            { 
+            
+            fields.map((field) => (
+              <ChipFields field={field} active={ fieldsInUse.includes(field) } />
+            ))
+            
+            }
           </Box>
           
           <Button
