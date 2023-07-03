@@ -9,7 +9,8 @@ export const useCarnetStore = () => {
 	const {
 		errorMessage,
         activeCarnet,
-        fields
+        fields,
+        loading
 	} = useSelector(state => state.carnet)
 
     const { bussiness } = useSelector(state => state.auth)
@@ -64,7 +65,8 @@ export const useCarnetStore = () => {
     }
 
     return {
-        currentfields: fields,
+        loading,
+        fields,
         activeCarnet,
         errorMessage,
         startLoadingCarnet,

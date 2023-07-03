@@ -7,6 +7,7 @@ import StayPrimaryLandscapeIcon from "@mui/icons-material/StayPrimaryLandscape";
 import StayPrimaryPortraitIcon from "@mui/icons-material/StayPrimaryPortrait";
 import { useCarnetStore } from '../../hooks';
 import { ChipFields } from "../components";
+import { width } from "@mui/system";
 // import { initCanvas } from "./miscript";
 
 export const CarnetPage = () => {
@@ -18,13 +19,13 @@ export const CarnetPage = () => {
     startSavingCarnet,
     startLoadingCarnet,
     activeCarnet,
-    currentFields 
+    fields: currentFields ,
+    loading
   } = useCarnetStore();
 
   //** Extraer de algun lado */
   const fields = ["nombre", "cedula", "accion"];
   const fieldsInUse = activeCarnet?.fields?.split(",") || []; 
-  console.log({ fieldsInUse })
 
   const [svg, setSvg] = useState({})
 
@@ -178,29 +179,41 @@ export const CarnetPage = () => {
       // TODO: DEBEN SER EXTRAIDOS DE LA BASE DE DATOS
       // const texts = addText(["nombre", "cedula", "accion"]);
   
-      let rect = new fabric.Rect({
-        left: 100,    // Posición izquierda del rectángulo
-        top: 100,     // Posición superior del rectángulo
-        width: 100,   // Ancho del rectángulo
-        height: 100,  // Altura del rectángulo
-        fill: '#ddd'  // Color de relleno del rectángulo
-      });
+      // let rect = new fabric.Rect({
+      //   left: 100,    // Posición izquierda del rectángulo
+      //   top: 100,     // Posición superior del rectángulo
+      //   width: 100,   // Ancho del rectángulo
+      //   height: 100,  // Altura del rectángulo
+      //   fill: '#ddd'  // Color de relleno del rectángulo
+      // });
   
-      // Crear un nuevo texto
-      let text = new fabric.Text('foto', {
-        fontSize: 20,                      // Tamaño de fuente del texto
-        fill: 'black',                     // Color de relleno del texto
-        left: rect.left + rect.width / 2,  // Posición horizontal centrada
-        top: rect.top + rect.height / 2,   // Posición vertical centrada
-        originX: 'center',                 // Origen X centrado
-        originY: 'center'                  // Origen Y centrado
-      });
+      // // Crear un nuevo texto
+      // let text = new fabric.Text('foto', {
+      //   fontSize: 20,                      // Tamaño de fuente del texto
+      //   fill: 'black',                     // Color de relleno del texto
+      //   left: rect.left + rect.width / 2,  // Posición horizontal centrada
+      //   top: rect.top + rect.height / 2,   // Posición vertical centrada
+      //   originX: 'center',                 // Origen X centrado
+      //   originY: 'center'                  // Origen Y centrado
+      // });
 
-      let group = new fabric.Group([rect, text], {
-        left: rect.left,
-        top: rect.top
+      // let group = new fabric.Group([rect, text], {
+      //   left: rect.left,
+      //   top: rect.top
+      // });
+      // canvas.add(group);
+      fabric.Image.fromURL('https://neocarnets.neoaplicaciones.com/carnets/iconos/default.png', function(img) {
+        // Configurar propiedades de la imagen
+        img.set({
+          left: 100,
+          top: 100,
+          width: 200,
+          height: 200
+        });
+
+        // Añadir la imagen al lienzo
+        canvas.add(img);
       });
-      canvas.add(group);
     }
 
     let addBackgroundbtn = document.getElementById("addBackgroundbtn");
@@ -333,8 +346,6 @@ export const CarnetPage = () => {
                 borderRadius: "20px",
               }}
             >
-              {/* <FabricJSCanvas className="sample-canvas" onReady={onReady} /> */}
-              {/* <canvas id="design" width="318" height="500"></canvas> */}
               <canvas id="design" ref={canvasRef} width="318" height="500"></canvas>
             </Box>
           </Box>
@@ -382,7 +393,7 @@ export const CarnetPage = () => {
           >
             Agregar fondo personalizado
           </Button>
-          <Button id="toSvgBtn" variant="outlined" fullWidth onClick={handleExportSvg}>
+          <Button id="toSvgBtn" variant="outlined" fullWidth onClick={handleExportSvg} disabled={loading}>
             Guardar
           </Button>
           
