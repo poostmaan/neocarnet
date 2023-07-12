@@ -25,15 +25,15 @@ export const useAuthStore = () => {
 
 			const bussiness = validatedUser.data.data;
 			dispatch(login({ bussiness }));
-		} catch (error) {
+		} catch (err) {
 
-			let message = "";
+			let error = "Algo salio mal. Contacte a un administrador";
 
-			if (error.errorMessage) message = error.errorMessage;
-			else if (error.response.data.data.response) message = error.response.data.data.response;
-			else message = "Algo salió mal, verifique e intente nuevamente";
+			// if (error.errorMessage) message = error.errorMessage;
+			// else if (error.response.data.data.response) message = error.response.data.data.response;
+			// else message = "Algo salió mal, verifique e intente nuevamente";
 
-			dispatch(setError({ error: message }));
+			dispatch(setError({ error }));
 		}
 	}
 
