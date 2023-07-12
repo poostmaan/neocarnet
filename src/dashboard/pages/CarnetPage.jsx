@@ -1,7 +1,7 @@
 import { DashboardLayout } from "../layouts";
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
-import { Box, Grid, Button, Typography } from "@mui/material";
+import { Box, Grid, Button, Typography, Alert, AlertTitle } from "@mui/material";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import StayPrimaryLandscapeIcon from "@mui/icons-material/StayPrimaryLandscape";
 import StayPrimaryPortraitIcon from "@mui/icons-material/StayPrimaryPortrait";
@@ -31,6 +31,8 @@ export const CarnetPage = () => {
 
   const handleExportSvg = () => {
     const { svgCode, json } = svg;
+
+    console.log(svgCode);
     let fields = currentFields.toString();
     startSavingCarnet({ contentsvg: svgCode, contentjson: json, fields })
   }
@@ -396,6 +398,11 @@ export const CarnetPage = () => {
           <Button id="toSvgBtn" variant="outlined" fullWidth onClick={handleExportSvg} disabled={loading}>
             Guardar
           </Button>
+
+          <Alert severity="success" sx={{ position: "absolute", bottom: 12, right:12, width: "300px",display: loading ? "block" : "none" }}>
+            <AlertTitle>Perfecto!</AlertTitle>
+            Se ha guardado el carnet con <strong>éxito</strong>
+          </Alert>
           
         </Grid>
       </Grid>
