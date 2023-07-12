@@ -28,7 +28,6 @@ export const useAuthStore = () => {
 		} catch (err) {
 
 			let error = "Algo salio mal. Contacte a un administrador";
-
 			// if (error.errorMessage) message = error.errorMessage;
 			// else if (error.response.data.data.response) message = error.response.data.data.response;
 			// else message = "Algo salió mal, verifique e intente nuevamente";
