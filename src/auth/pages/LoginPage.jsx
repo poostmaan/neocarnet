@@ -77,7 +77,8 @@ export const LoginPage = () => {
           />
           <Grid container sx={{ justifyContent: "center" }}>
             <ReCAPTCHA
-              sitekey="6LcrMIYlAAAAAC3mrjBAezUwBoAy4kZwbdKm5dVS"
+              // sitekey="6LcrMIYlAAAAAC3mrjBAezUwBoAy4kZwbdKm5dVS"
+              sitekey="6LcpSyMnAAAAAFY1LbRZ14UfozmffD7yf8xtDmAZ"
               onChange={onChange}
             />
           </Grid>

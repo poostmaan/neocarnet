@@ -43,9 +43,9 @@ export function ControlPersons() {
   const options = {
     filter: true,
     filterType: 'dropdown',
-    responsive: 'scroll',
+    responsive: 'standard',
     rowsPerPage: 10,
-    selectableRows: false,
+    selectableRows: "none",
     downloadOptions: {
       filename: 'excel-format.csv',
       separator: ';',
