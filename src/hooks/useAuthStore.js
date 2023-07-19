@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { checking, login, logout, error as setError } from '../store';
+import { checking, login, logout, setError } from '../store';
 import CarnetApi from '../api/CarnetApi';
 export const useAuthStore = () => {
 
@@ -28,9 +28,6 @@ export const useAuthStore = () => {
 		} catch (err) {
 
 			let error = "Algo salio mal. Contacte a un administrador";
-			// if (error.errorMessage) message = error.errorMessage;
-			// else if (error.response.data.data.response) message = error.response.data.data.response;
-			// else message = "Algo salió mal, verifique e intente nuevamente";
 
 			dispatch(setError({ error }));
 		}
@@ -47,8 +44,8 @@ export const useAuthStore = () => {
 			data.id = dataSaved.data.data.id;
 
 			dispatch(login({ bussiness: data }))
-		} catch (error) {
-			let errorMessage = error.response.data.data.response
+		} catch (err) {
+			let errorMessage = err.response.data.response
 			dispatch(setError({ error: errorMessage }));
 		}
 	}

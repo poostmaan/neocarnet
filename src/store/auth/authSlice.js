@@ -33,8 +33,13 @@ export const authSlice = createSlice({
       state.errorMessage = "";
     },
     logout: (state) => {
-      state.bussiness = null;
       state.authenticated = authStatuses.notAuthenticated;
+      state.bussiness = null;
+      state.errorMessage = "";
+      state.bussinessPersons = [];
+      state.uploadedPeople = "";
+      state.uploadedSucessfully = "";
+      state.uploadedFailed = "";
     },
     checking: (state) => {
       state.authenticated = authStatuses.cheking;
@@ -42,7 +47,7 @@ export const authSlice = createSlice({
     cleanError: (state) => {
       state.errorMessage = "";
     },
-    error: (state, { payload }) => {
+    setError: (state, { payload }) => {
       state.authenticated = authStatuses.notAuthenticated;
       state.errorMessage = payload.error
     },
@@ -71,7 +76,7 @@ export const authSlice = createSlice({
 export const {
   checking,
   cleanError,
-  error,
+  setError,
   login,
   logout,
   setPersons, setBussinessPersons,uploadPeople, cleanPeople
