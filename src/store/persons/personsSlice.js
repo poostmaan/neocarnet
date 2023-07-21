@@ -32,8 +32,16 @@ export const personsSlice = createSlice({
 		},
 		setLoading: (state) => {
 			state.loading = true;
-		}
+		},
+		logoutPersons: (state) => {
+			state.bussinessPersons = [],
+			state.uploadedPeople = "",
+			state.uploadedSucessfully = "",
+			state.uploadedFailed = "",
+			state.loading = true
+			state.errorMessage = null
+		}	
 	},
 });
 
-export const { setBussinessPersons, uploadPeople, cleanError, cleanPeople, setErrorMessage, setLoading } = personsSlice.actions;
+export const { setBussinessPersons, uploadPeople, cleanError, cleanPeople, setErrorMessage, setLoading, logoutPersons } = personsSlice.actions;

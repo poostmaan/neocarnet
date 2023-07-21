@@ -22,6 +22,12 @@ export const carnetSlice = createSlice({
 		},
 		setFields: (state, { payload }) => {
 			state.fields = payload.fields;
+		},
+		logoutCarnet: (state) => {
+			state.activeCarnet = {};
+			state.fields = [];
+			state.loading = false; 
+			state.errorMessage = null;
 		}
 	},
 });
@@ -30,5 +36,6 @@ export const {
     setActiveCarnet,
     setErrorMessage,
     setLoading,
-	setFields
+	setFields,
+	logoutCarnet
 } = carnetSlice.actions;

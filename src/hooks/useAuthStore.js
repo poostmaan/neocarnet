@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { checking, login, logout, setError } from '../store';
 import CarnetApi from '../api/CarnetApi';
+import { logoutCarnet } from '../store/carnets';
+import { logoutPersons } from '../store/persons';
 export const useAuthStore = () => {
 
 	const dispatch = useDispatch();
@@ -74,6 +76,8 @@ export const useAuthStore = () => {
 
 	const startLogout = () => {
 		dispatch(logout())
+		dispatch(logoutCarnet());
+		dispatch(logoutPersons());
 	}
 
 	return {
