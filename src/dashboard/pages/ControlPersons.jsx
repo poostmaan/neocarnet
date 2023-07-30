@@ -1,15 +1,13 @@
 import { DashboardLayout } from '../layouts';
 import React, { useState } from "react";
-import { Grid } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { Box, Grid, Typography } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MUIDataTable from 'mui-datatables';
-import { useAuthStore, usePersons } from '../../hooks';
+import { usePersons } from '../../hooks';
 import MUIModal from '../components/MuiModal';
 import ContentModal from '../components/ContentModal';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
-
-const theme = createTheme();
 
 export function ControlPersons() {
 
@@ -33,19 +31,16 @@ export function ControlPersons() {
     },
     {
       name: "email",
-      label: "Correo electrónico"
+      label: "Correo"
     }
   ];
-
-  console.log(bussinessPersons);
-
 
   const options = {
     filter: true,
     filterType: 'dropdown',
-    responsive: 'scroll',
+    responsive: 'standard',
     rowsPerPage: 10,
-    selectableRows: false,
+    selectableRows: "none",
     downloadOptions: {
       filename: 'excel-format.csv',
       separator: ';',
@@ -126,15 +121,36 @@ export function ControlPersons() {
   };
 
   return (
-    <DashboardLayout nameModule={"Personas"}>
-      <Grid container sx={{ justifyContent: "flex-end", alignItems: "flex-end", mb: 2 }}>
-        <Grid>
-          <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />}>
-            <ContentModal />
-          </MUIModal>
-        </Grid>
-      </Grid>
-      <MUIDataTable title={'Personas en el sistema'} data={bussinessPersons} columns={columns} options={options} />
+    <DashboardLayout nameModule="Personas">
+      {
+        bussinessPersons.length === 0
+        ? 
+        (
+          <Box sx={{ display: "flex", flexDirection:"column",  alignItems: "center", alignContent: "center", mb: 2 }}>
+              <Box sx={{ border: "2px solid #ddd", borderRadius: "50%", p: 2, mb: 2, height: "64" }}>
+                <FormatListBulletedIcon sx={{ fontSize: "64px", color: "#ddd"}} />
+              </Box>
+              <Typography >Gestiona y controla los tu personal subiendo sus datos aqui </Typography>
+              <Typography variant="caption" sx={{ mb: 2}}>Descarga la plantilla, rellenala con la informacion de tu personal y carga en NeoCarnets</Typography>
+              <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />}>
+                <ContentModal />
+              </MUIModal>
+          </Box>
+        )
+        : 
+        (
+          <>
+            <Grid container sx={{ justifyContent: "flex-end", alignItems: "flex-end", mb: 2 }}>
+              <Grid>
+                <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />}>
+                  <ContentModal />
+                </MUIModal>
+              </Grid>
+            </Grid>
+            <MUIDataTable title={'Personas en el sistema'} data={bussinessPersons} columns={columns} options={options} />
+          </>
+        )
+      }
     </DashboardLayout>
   );
 }

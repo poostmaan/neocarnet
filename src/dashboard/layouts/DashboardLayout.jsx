@@ -89,7 +89,7 @@ export const DashboardLayout = ({ children, nameModule }) => {
     setAnchorEl(null);
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -100,7 +100,7 @@ export const DashboardLayout = ({ children, nameModule }) => {
     <Box sx={{ display: "flex" }}>
       {/* <DefaultSnackbar message="Has iniciado sesión" alertType="success" /> */}
       <CssBaseline />
-      <AppBar position="absolute" open={open}>
+      <AppBar position="absolute" open={open} >
         <Toolbar
           sx={{
             pr: "24px", // keep right padding when drawer closed
@@ -205,16 +205,12 @@ export const DashboardLayout = ({ children, nameModule }) => {
       <Box
         component="main"
         sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light"
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
           flexGrow: 1,
           height: "100vh",
-          overflow: "auto",
+          overflow: "hidden",
         }}
       >
-        <Toolbar />
+        <Toolbar id="editor"/>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {children}
         </Container>

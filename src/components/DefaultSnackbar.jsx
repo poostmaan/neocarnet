@@ -1,7 +1,7 @@
 import { Alert, Slide, Snackbar } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export const DefaultSnackbar = ({ handleClose, message, close, alertType = "error"}) => {
+export const DefaultSnackbar = ({ handleClose, message, close, alertType = "error", clicked}) => {
 
   const [transition, setTransition] = useState(null);
   const [open, setOpen] = useState(false);
@@ -12,9 +12,9 @@ export const DefaultSnackbar = ({ handleClose, message, close, alertType = "erro
   }, [])
 
   useEffect(() => {
-    if (message === '') return;
+    if (message === '') return; 
     setOpen(true);
-  }, [message])
+  }, [message, clicked])
 
   return (
     <Snackbar

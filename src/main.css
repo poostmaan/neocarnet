@@ -68,3 +68,17 @@
 html {
   /* overflow-y: hidden; */
 }
+
+.pointer {
+  cursor: pointer
+}
+
+.carnetTemplates {
+  margin: 0 3px;
+}
+
+.chip-active {
+  background-color: #0205a1e8 !important;
+  color: white !important;
+  cursor: pointer;
+}

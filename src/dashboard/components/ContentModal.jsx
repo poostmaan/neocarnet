@@ -68,7 +68,7 @@ const ContentModal = () => {
               >
                 Subir archivo
                 <input type="file" accept=".csv,.xlsx" name="csv" hidden onChange={handleInputFile} />
-                <input type="hidden" name="club" value={bussiness.id} hidden />
+                <input type="hidden" name="bussinessid" value={bussiness.id} hidden />
               </Button>
               {/* <FormHelperText>Nota: Solo se permiten archivos CSV (Comma Separated Values) y Excel (XLSX) utilizando el formato especificiado. <a href='#'>Click aquí para descargar el formato</a></FormHelperText> */}
               <FormHelperText>Nota: Solo se permiten archivos CSV (Comma Separated Values) y Excel (XLSX) utilizando el formato especificiado.</FormHelperText>

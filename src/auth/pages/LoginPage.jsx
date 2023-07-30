@@ -20,13 +20,13 @@ import { AppLink, DefaultSnackbar } from '../../components';
 export const LoginPage = () => {
 
   const { startLogin, errorMessage } = useAuthStore();
+  const [clicked, setClicked] = useState(0)
   const [validatedUser, setValidateUser] = useState(false);
   const onChange = (value) => (value) ? setValidateUser(true) : false;
   
-  const [open, setOpen] = useState(false);
-
   const handleSubmit = (event) => {
     event.preventDefault();
+    setClicked( () => clicked + 1 );
 
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries([...formData]);
@@ -35,14 +35,9 @@ export const LoginPage = () => {
     startLogin(data);
   };
 
-  // useEffect(() => {
-  //   if (errorMessage === '') return;
-  //   setOpen(true);
-  // }, [errorMessage])
-
   return (
     <Container component="main" maxWidth="xs">
-      <DefaultSnackbar message={errorMessage}/>
+      <DefaultSnackbar message={errorMessage} clicked={clicked} />
       <CssBaseline />
       <Box
         sx={{
@@ -82,7 +77,8 @@ export const LoginPage = () => {
           />
           <Grid container sx={{ justifyContent: "center" }}>
             <ReCAPTCHA
-              sitekey="6LcrMIYlAAAAAC3mrjBAezUwBoAy4kZwbdKm5dVS"
+              // sitekey="6LcrMIYlAAAAAC3mrjBAezUwBoAy4kZwbdKm5dVS"
+              sitekey="6LcpSyMnAAAAAFY1LbRZ14UfozmffD7yf8xtDmAZ"
               onChange={onChange}
             />
           </Grid>
