@@ -54,7 +54,7 @@ const ContentModal = () => {
         <Box component="form" id="csv-form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} sx={{ wordBreak: 'break-word' }}>
-              <FormHelperText>Descarga el formato para subir tu personal: <a href='http://neocarnets.neoaplicaciones.com/w/assets/plantilla.csv' download>En CSV</a> <a href='http://neocarnets.neoaplicaciones.com/w/assets/plantilla.xlsx' download>En XLSX</a></FormHelperText>
+              <FormHelperText>Descarga el formato para subir tu personal: <a href='http://neocarnets.neoaplicaciones.com/assets/plantilla.csv' download>En CSV</a> <a href='http://neocarnets.neoaplicaciones.com/assets/plantilla.xlsx' download>En XLSX</a></FormHelperText>
             </Grid>
             {filename && <Grid item xs={12} sm={12} sx={{ wordBreak: 'break-word' }}>
               {filename}
