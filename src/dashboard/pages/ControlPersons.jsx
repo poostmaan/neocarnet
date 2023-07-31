@@ -17,25 +17,23 @@ export function ControlPersons() {
     downloadFile: true,
   };
 
-  // const columns = [
-  //   {
-  //     name: "credential",
-  //     label: "Cédula"
-  //   }, {
-  //     name: "name",
-  //     label: "Nombre completo"
-  //   },
-  //   {
-  //     name: "phone",
-  //     label: "Teléfono"
-  //   },
-  //   {
-  //     name: "email",
-  //     label: "Correo electrónico"
-  //   }
-  // ];
-
-  const columns = [];
+  const columns = [
+    {
+      name: "credential",
+      label: "Cédula"
+    }, {
+      name: "name",
+      label: "Nombre completo"
+    },
+    {
+      name: "phone",
+      label: "Teléfono"
+    },
+    {
+      name: "email",
+      label: "Correo"
+    }
+  ];
 
   const options = {
     filter: true,
@@ -125,7 +123,7 @@ export function ControlPersons() {
   return (
     <DashboardLayout nameModule="Personas">
       {
-        columns.length === 0 
+        bussinessPersons.length === 0
         ? 
         (
           <Box sx={{ display: "flex", flexDirection:"column",  alignItems: "center", alignContent: "center", mb: 2 }}>

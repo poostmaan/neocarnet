@@ -25,7 +25,7 @@ export const CarnetPage = () => {
   } = useCarnetStore();
 
   //** Extraer de algun lado */
-  const fields = ["nombre", "cedula", "accion"];
+  const fields = ["nombre", "cedula", "cargo"]; 
   const fieldsInUse = activeCarnet?.fields?.split(",") || []; 
 
   const [svg, setSvg] = useState({})

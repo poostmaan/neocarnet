@@ -31,7 +31,7 @@ export const usePersons = () => {
 		}
 	}
 
-	const uploadPersons = async (data, bussinessId) => {
+	const uploadPersons = async (data, bussinessid) => {
 
 		dispatch(setLoading());
 
@@ -41,8 +41,8 @@ export const usePersons = () => {
 			// 	baseURL: "http://127.0.0.1:8080/neoCARNETSLocal"
 			// })
 
-			const dataSaved = await CarnetApi.post('/excel/uploadPeople.php', data);
-			const refreshData = await CarnetApi.get(`/api/bussiness/${bussinessId}/persons`)
+			const dataSaved = await CarnetApi.post('/excel/uploadPeople.php', data); 
+			const refreshData = await CarnetApi.get(`/api/bussiness/${bussinessid}/persons`)
 
 			dispatch(cleanError());
 			dispatch(uploadPeople({ uploadedPeople: dataSaved.data.response }));
