@@ -43,7 +43,7 @@ const MUIModal = ({ children, buttonName, modalTitle = "", icon }) => {
 			>
 				<Fade in={open}>
 					<ContentModalWrapper>
-						<Grid containers
+						<Grid container
               className="modalContainer"
 							style={{
 								backgroundColor: "#fff",
@@ -72,9 +72,9 @@ const MUIModal = ({ children, buttonName, modalTitle = "", icon }) => {
 							>
 								<CloseIcon />
 							</IconButton>
-							<Typography variant="body1" gutterBottom>
+							<Grid container>
 								{children}
-							</Typography>
+							</Grid>
 						</Grid>
 					</ContentModalWrapper>
 				</Fade>

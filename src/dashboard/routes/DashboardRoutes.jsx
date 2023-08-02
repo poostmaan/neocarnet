@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { CarnetPage, ControlPersons, MainPage, ProfilePage } from '../pages'
+import { CarnetPage, ControlPersons, MainPage, ProfilePage, Carnet } from '../pages'
 
 export const DashboardRoutes = () => {
   return (
@@ -8,6 +8,7 @@ export const DashboardRoutes = () => {
         <Route path="/dashboard" element={ <MainPage />} />
         <Route path="/dashboard/persons" element={ <ControlPersons /> } />
         <Route path="/dashboard/carnets" element={ <CarnetPage /> } /> 
+        <Route path="/dashboard/carnet" element={ <Carnet /> } /> 
         <Route path="/*" element={ <Navigate to="/dashboard" /> } />
     </Routes>
   )
