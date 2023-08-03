@@ -157,7 +157,7 @@ export const Carnet = () => {
               </Typography>
             </FiCardContent>
             <FiCardActions className={classes.fiCardContent}>
-              <AppLink path="/dashboard/persons">
+              <AppLink path={`/dashboard/persons?id=${ btoa("98-99") }`}>
 
                 <Button size="small" color="inherit" variant="outlined">
                   Ver mas
