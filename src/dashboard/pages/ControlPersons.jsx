@@ -1,13 +1,14 @@
 import { DashboardLayout } from '../layouts';
 import React, { useState } from "react";
-import { Box, Grid, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Grid, Typography } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MUIDataTable from 'mui-datatables';
 import { usePersons } from '../../hooks';
 import MUIModal from '../components/MuiModal';
 import ContentModal from '../components/ContentModal';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-
+import { AppLink } from '../../components';
+import AddCardIcon from '@mui/icons-material/AddCard';
 
 export function ControlPersons() {
 
@@ -39,7 +40,7 @@ export function ControlPersons() {
     filter: true,
     filterType: 'dropdown',
     responsive: 'standard',
-    rowsPerPage: 10,
+    rowsPerPage: 4,
     selectableRows: "none",
     downloadOptions: {
       filename: 'excel-format.csv',
@@ -140,9 +141,21 @@ export function ControlPersons() {
         : 
         (
           <>
-            <Grid container sx={{ justifyContent: "flex-end", alignItems: "flex-end", mb: 2 }}>
+            <Alert severity="info">
+              <AlertTitle>Información</AlertTitle>
+              En esta sección puedes agregar a tus empleados <strong>¡solo subiendo un CSV!</strong>
+            </Alert>
+            <Grid container sx={{ justifyContent: "flex-end", alignItems: "flex-end", my: 2 }}>
               <Grid>
-                <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />}>
+                
+                <AppLink path="/dashboard/editor" >
+                  <Button size="small" variant="contained" color="primary" sx={{py:1}}>
+                    <AddCardIcon />
+                    Crear y editar carnet
+                  </Button>
+                </AppLink>
+                &nbsp;
+                <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />} >
                   <ContentModal />
                 </MUIModal>
               </Grid>

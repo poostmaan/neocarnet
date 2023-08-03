@@ -157,16 +157,10 @@ export const Carnet = () => {
               </Typography>
             </FiCardContent>
             <FiCardActions className={classes.fiCardContent}>
-              <AppLink path="/dashboard/carnets">
-
-                <Button size="small" color="inherit" variant="outlined">
-                  Editar
-                </Button>
-              </AppLink>
               <AppLink path="/dashboard/persons">
 
                 <Button size="small" color="inherit" variant="outlined">
-                  Ver personas
+                  Ver mas
                 </Button>
               </AppLink>
             </FiCardActions>
