@@ -17,7 +17,7 @@ export const mainListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </AppLink>
-    <AppLink path="/dashboard/persons" label="Personas">
+    {/* <AppLink path="/dashboard/persons" label="Personas">
       <ListItemButton>
         <ListItemIcon>
           <PersonIcon />
@@ -32,13 +32,13 @@ export const mainListItems = (
         </ListItemIcon>
         <ListItemText primary="Carnets" />
       </ListItemButton>
-    </AppLink>
-    <AppLink path="/dashboard/carnet" label="carnet">
+    </AppLink> */}
+    <AppLink path="/dashboard/carnets" label="carnet">
       <ListItemButton>
         <ListItemIcon>
           <CreditCardIcon /> 
         </ListItemIcon>
-        <ListItemText primary="carnet" />
+        <ListItemText primary="Carnets" />
       </ListItemButton>
     </AppLink>
   </React.Fragment>

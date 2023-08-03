@@ -7,8 +7,8 @@ export const DashboardRoutes = () => {
         <Route path="/profile" element={ <ProfilePage />} />
         <Route path="/dashboard" element={ <MainPage />} />
         <Route path="/dashboard/persons" element={ <ControlPersons /> } />
-        <Route path="/dashboard/carnets" element={ <CarnetPage /> } /> 
-        <Route path="/dashboard/carnet" element={ <Carnet /> } /> 
+        <Route path="/dashboard/carnets" element={ <Carnet /> } /> 
+        <Route path="/dashboard/editor" element={ <CarnetPage /> } /> 
         <Route path="/*" element={ <Navigate to="/dashboard" /> } />
     </Routes>
   )
