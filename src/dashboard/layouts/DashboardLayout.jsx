@@ -77,7 +77,8 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-export const DashboardLayout = ({ children, nameModule }) => {
+export const DashboardLayout = ({ children, nameModule, properties }) => {
+  const margin = properties?.margin || 4;
   const { startLogout, bussiness } = useAuthStore();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -211,7 +212,7 @@ export const DashboardLayout = ({ children, nameModule }) => {
         }}
       >
         <Toolbar id="editor"/>
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="lg" sx={{ mt: margin, mb: 4 }}>
           {children}
         </Container>
       </Box>
