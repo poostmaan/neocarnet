@@ -1,7 +1,7 @@
 import { DashboardLayout } from "../layouts";
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
-import { Box, Grid, Button, Typography, Alert, AlertTitle } from "@mui/material";
+import { Box, Grid, Button, Typography, Alert, AlertTitle, Breadcrumbs } from "@mui/material";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import StayPrimaryLandscapeIcon from "@mui/icons-material/StayPrimaryLandscape";
 import StayPrimaryPortraitIcon from "@mui/icons-material/StayPrimaryPortrait";
@@ -325,9 +325,13 @@ export const CarnetPage = () => {
    
     
   }, [])
+  const properties = { margin: 1 };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout properties={properties}>
+      <AppLink path="/dashboard/persons">
+        <Button><ArrowBackIcon /> Volver</Button>
+      </AppLink>
       <Grid container sx={{ height: 'calc(100vh - 10vh)'}}>
 
         <Grid item md={9}>
