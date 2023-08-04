@@ -56,7 +56,7 @@ const formValidation = {
   phone: [ (value) => /^58(0?(412|414|416|424|426|243))([0-9]{0,7})$/.test(value), 'El teléfono es inválido. Debe lucir como 584241234567' ],
   email: [ (value) => value.includes('@'), 'El correo ingresado no es válido' ],
   password: [ 
-    (value) => {value.length >= 8}, 
+    (value) => value.length >= 8, 
     'El password debe de tener más de 8 letras.'
   ],
   direction:  [ (value) => value.length >= 2, 'La direccion es obligatoria' ],  

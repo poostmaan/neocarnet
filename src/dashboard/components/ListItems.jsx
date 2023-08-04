@@ -33,13 +33,5 @@ export const mainListItems = (
         <ListItemText primary="Carnets" />
       </ListItemButton>
     </AppLink>
-    <AppLink path="/dashboard/carnet" label="carnet">
-      <ListItemButton>
-        <ListItemIcon>
-          <CreditCardIcon /> 
-        </ListItemIcon>
-        <ListItemText primary="carnet" />
-      </ListItemButton>
-    </AppLink>
   </React.Fragment>
 );
