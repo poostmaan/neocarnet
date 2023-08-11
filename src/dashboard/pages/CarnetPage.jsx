@@ -328,7 +328,7 @@ export const CarnetPage = () => {
   const properties = { margin: 1 };
 
   return (
-    <DashboardLayout properties={properties}>
+    <DashboardLayout nameModule="Editar carnet" properties={properties}>
       <AppLink path="/dashboard/persons">
         <Button><ArrowBackIcon /> Volver</Button>
       </AppLink>
