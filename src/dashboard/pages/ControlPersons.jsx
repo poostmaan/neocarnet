@@ -1,6 +1,6 @@
 import { DashboardLayout } from '../layouts';
 import React, { useState } from "react";
-import { Alert, AlertTitle, Box, Button, Grid, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Breadcrumbs, Button, Grid, Typography } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MUIDataTable from 'mui-datatables';
 import { usePersons } from '../../hooks';
@@ -9,6 +9,7 @@ import ContentModal from '../components/ContentModal';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { AppLink } from '../../components';
 import AddCardIcon from '@mui/icons-material/AddCard';
+import { Link } from 'react-router-dom';
 
 export function ControlPersons() {
 
@@ -141,6 +142,10 @@ export function ControlPersons() {
         : 
         (
           <>
+            <Breadcrumbs aria-label="breadcrumb">
+              <AppLink path="/dashboard/carnets" label="Carnets" />
+              <Typography color="text.primary">Carnet Dpto. Sistemas</Typography>
+            </Breadcrumbs>
             <Alert severity="info">
               <AlertTitle>Información</AlertTitle>
               En esta sección puedes agregar a tus empleados <strong>¡solo subiendo un CSV!</strong>
