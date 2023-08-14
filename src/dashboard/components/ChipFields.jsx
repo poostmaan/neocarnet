@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import { useState } from "react";
-import { useCarnetStore } from "../../hooks";
+import { useCarnetsStore } from "../../hooks";
 
 export const ChipFields = ({ field, active }) => {
 
@@ -8,7 +8,7 @@ export const ChipFields = ({ field, active }) => {
 
   const {
     updateFields,
-  } = useCarnetStore();
+  } = useCarnetsStore();
 
 
   const handleDelete = () => {

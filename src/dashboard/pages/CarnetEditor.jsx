@@ -6,7 +6,7 @@ import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import StayPrimaryLandscapeIcon from "@mui/icons-material/StayPrimaryLandscape";
 import StayPrimaryPortraitIcon from "@mui/icons-material/StayPrimaryPortrait";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useCarnetStore } from '../../hooks';
+import { useCarnetsStore } from '../../hooks';
 import { ChipFields } from "../components";
 import { width } from "@mui/system";
 import { AppLink } from "../../components";
@@ -22,7 +22,7 @@ export const CarnetPage = () => {
     activeCarnet,
     fields: currentFields ,
     loading
-  } = useCarnetStore();
+  } = useCarnetsStore();
 
   //** Extraer de algun lado */
   const fields = ["nombre", "cedula", "cargo"]; 
