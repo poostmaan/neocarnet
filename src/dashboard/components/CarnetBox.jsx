@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   }
 });
 
-export const CarnetBox = () => {
+export const CarnetBox = ({ id, title, description }) => {
 
   const classes = useStyles();
 
@@ -56,26 +56,25 @@ export const CarnetBox = () => {
         <FiCardMedia
           media="picture"
           alt="Contemplative Reptile"
-          image="/assets/cac.png"
+          image="/assets/defaultCarnet.png"
           title="Contemplative Reptile"
           className={classes.media}
         />
         <FiCardContent className={classes.fiCardContent}>
           <Typography gutterBottom variant="h5" component="h2">
-            Lizard
+            {title}
           </Typography>
           <Typography
             variant="body2"
             className={classes.fiCardContentTextSecondary}
             component="p"
           >
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {description}
           </Typography>
         </FiCardContent>
         <FiCardActions className={classes.fiCardContent}>
           <AppLink
-            path={`/dashboard/persons?id=${btoa("98-99")}`}
+            path={`/dashboard/persons?id=${btoa(id)}`}
             color="white"
           >
             <Button size="small" color="inherit" variant="outlined">
