@@ -4,7 +4,7 @@ import storageSession from 'redux-persist/lib/storage/session'
 import { persistReducer, persistStore } from 'redux-persist';
 import { apikeySlice } from './apikey';
 import { personsSlice } from './persons/';
-import { carnetSlice } from './carnets';
+import { carnetsSlice } from './carnets';
 
 const persistConfig = {
     key: 'root',
@@ -16,7 +16,8 @@ const rootReducer = combineReducers({
     auth: authSlice.reducer,
     apikey: apikeySlice.reducer, 
     persons: personsSlice.reducer,
-    carnet: carnetSlice.reducer
+    // carnet: carnetSlice.reducer,
+    carnets: carnetsSlice.reducer
 
     // TODO: AGREGAR EL CARNETSLICE
     // TODO: AGREGAR LA LLAMADA LA API MEDIANTE EL BOTON GUARDAR
