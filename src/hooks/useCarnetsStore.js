@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setActiveCarnet,
+  setActiveCarnet as setActiveCarnetStore,
   setCarnets,
   setErrorMessage,
   setFields,
@@ -9,6 +9,7 @@ import {
 import CarnetApi from "../api/CarnetApi";
 
 export const useCarnetsStore = () => {
+
   const dispatch = useDispatch();
 
   const { 
@@ -70,12 +71,20 @@ export const useCarnetsStore = () => {
     dispatch(setFields({ fields: newFields }));
   };
 
+  const getPersonsByCarnetid = (carnetid) => total.find( elem => elem.id === carnetid ).persons || [];
+
+  const setActiveCarnet = (carnet) => {
+    dispatch(setActiveCarnetStore({ activeCarnet: carnet }));
+  }
+
   return {
     total,
     loading,
     fields,
     activeCarnet,
     errorMessage,
+    setActiveCarnet,
+    getPersonsByCarnetid,
     startLoadingCarnet,
     startSavingCarnet,
     updateFields,
