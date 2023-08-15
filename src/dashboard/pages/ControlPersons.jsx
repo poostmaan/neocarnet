@@ -3,17 +3,17 @@ import React, { useState } from "react";
 import { Alert, AlertTitle, Box, Breadcrumbs, Button, Grid, Typography } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MUIDataTable from 'mui-datatables';
-import { usePersons } from '../../hooks';
+import { useCarnetsStore, usePersons } from '../../hooks';
 import MUIModal from '../components/MuiModal';
 import ContentModal from '../components/ContentModal';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { AppLink } from '../../components';
 import AddCardIcon from '@mui/icons-material/AddCard';
-import { Link } from 'react-router-dom';
 
 export function ControlPersons() {
 
-  const { bussinessPersons } = usePersons();
+  const { getPersonsByCarnetid, activeCarnet } = useCarnetsStore();
+  const personsByCarnetid = getPersonsByCarnetid(activeCarnet.id);
 
   const state = {
     downloadFile: true,
@@ -122,10 +122,11 @@ export function ControlPersons() {
     },
   };
 
+  
   return (
     <DashboardLayout nameModule="Personas">
       {
-        bussinessPersons.length === 0
+        personsByCarnetid.length === 0
         ? 
         (
           <Box sx={{ display: "flex", flexDirection:"column",  alignItems: "center", alignContent: "center", mb: 2 }}>
@@ -165,7 +166,7 @@ export function ControlPersons() {
                 </MUIModal>
               </Grid>
             </Grid>
-            <MUIDataTable title={'Personas en el sistema'} data={bussinessPersons} columns={columns} options={options} />
+            <MUIDataTable title={'Personas en el sistema'} data={personsByCarnetid} columns={columns} options={options} />
           </>
         )
       }

@@ -7,6 +7,7 @@ import {
 
 import { FiCard, FiCardActions, FiCardContent, FiCardMedia } from "./";
 import { AppLink } from "../../components";
+import { useAuthStore, useCarnetsStore } from '../../hooks';
 
 const useStyles = makeStyles({
   container: {
@@ -46,7 +47,10 @@ const useStyles = makeStyles({
   }
 });
 
-export const CarnetBox = ({ id, title, description }) => {
+export const CarnetBox = ({ carnet }) => {
+
+  const { id, title, description } = carnet;
+  const { setActiveCarnet } = useCarnetsStore();
 
   const classes = useStyles();
 
@@ -77,7 +81,7 @@ export const CarnetBox = ({ id, title, description }) => {
             path={`/dashboard/persons?id=${btoa(id)}`}
             color="white"
           >
-            <Button size="small" color="inherit" variant="outlined">
+            <Button size="small" color="inherit" variant="outlined" onClick={ () => setActiveCarnet(carnet) }>
               Ver mas
             </Button>
           </AppLink>

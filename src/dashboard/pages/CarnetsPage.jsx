@@ -12,7 +12,6 @@ import { useCarnetsStore } from "../../hooks";
 import { useEffect } from "react";
 
 export const CarnetsPage = () => {
-
   const { total: carnets, startLoadingCarnet } = useCarnetsStore();
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export const CarnetsPage = () => {
         </Grid>
 
         {
-          carnets.map((carnet, index) => <CarnetBox key={index} {...carnet}/>)
+          carnets.map((carnet, index) => <CarnetBox key={index} carnet={carnet} />)
         }
       </Grid>
     </DashboardLayout>
