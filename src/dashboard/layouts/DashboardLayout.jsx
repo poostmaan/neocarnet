@@ -21,10 +21,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { mainListItems } from "../components";
-import { useAuthStore } from "../../hooks";
+import { useAuthStore, useCarnetsStore } from "../../hooks";
 
 import { Link } from '@mui/material';
-import { AppLink, DefaultSnackbar } from "../../components";
+import { AppLink, DefaultSnackbar, Loading } from "../../components";
 // import Chart from "./Chart";
 // import Deposits from "./Deposits";
 // import Orders from "./Orders";
@@ -80,6 +80,7 @@ const Drawer = styled(MuiDrawer, {
 export const DashboardLayout = ({ children, nameModule, properties }) => {
   const margin = properties?.margin || 4;
   const { startLogout, bussiness } = useAuthStore();
+  const { loading } = useCarnetsStore();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleMenu = (event) => {
@@ -213,7 +214,11 @@ export const DashboardLayout = ({ children, nameModule, properties }) => {
       >
         <Toolbar id="editor"/>
         <Container maxWidth="lg" sx={{ mt: margin, mb: 4 }}>
-          {children}
+          {
+            loading 
+              ? <Loading />
+              : children
+          }
         </Container>
       </Box>
     </Box>
