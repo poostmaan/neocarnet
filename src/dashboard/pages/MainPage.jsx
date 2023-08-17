@@ -17,13 +17,6 @@ export const MainPage = () => {
     getBussinessPersons(bussiness.id);
   }, [])
 
-  const cardPerson = {
-    icon: <PersonIcon />,
-    title: "Añadir personal",
-    description: "Inicia en NeoCarnets agregando tu personal",
-    link: "/dashboard/persons",
-  }
-
   const cardCarnet = {
     icon: <CreditCardIcon />,
     title: "Crear Carnet",
@@ -71,7 +64,6 @@ export const MainPage = () => {
       </Alert>
 
       <Box sx={{ display: "flex", mt: 2 }}>
-        <CardDash {...cardPerson} />
         <CardDash {...cardCarnet} />
         {/* <Card variant="outlined">{card}</Card> */}
       </Box>
