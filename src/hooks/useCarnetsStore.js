@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  onEmptyEditor,
   setActiveCarnet as setActiveCarnetStore,
   setCarnets,
   setErrorMessage,
   setFields,
   setLoading,
+  setSavedCarnet,
 } from "../store/carnets";
 import CarnetApi from "../api/CarnetApi";
 
@@ -16,7 +18,7 @@ export const useCarnetsStore = () => {
     total, 
     errorMessage, 
     activeCarnet, 
-    fields, 
+    editor, 
     loading 
   } = useSelector(
     (state) => state.carnets
@@ -44,20 +46,24 @@ export const useCarnetsStore = () => {
   const startSavingCarnet = async (data) => {
     dispatch(setLoading());
 
+    const { id } = activeCarnet;
+
     try {
-      const createdCarnet = await CarnetApi.post(
-        `/api/v1/bussiness/${bussiness.id}/carnets`,
+      const createdCarnet = await CarnetApi.put(
+        `/api/v1/bussiness/${bussiness.id}/carnets/${ id }`,
         data
       );
-      dispatch(setActiveCarnet({ activeCarnet: createdCarnet.data.data }));
+      dispatch(setActiveCarnetStore({ activeCarnet: createdCarnet.data.data }));
+      dispatch(setSavedCarnet());
     } catch (error) {
-      dispatch(setErrorMessage(error));
+      dispatch(setErrorMessage(error)); 
     }
   };
 
   const updateFields = async (field) => {
-    console.log(fields, field);
+    console.log(editor.fields, field);
 
+    let fields = editor.fields;
     let fieldActived = fields.includes(field);
 
     let newFields = "";
@@ -71,22 +77,52 @@ export const useCarnetsStore = () => {
     dispatch(setFields({ fields: newFields }));
   };
 
-  const getPersonsByCarnetid = (carnetid) => total.find( elem => elem.id === carnetid ).persons || [];
+  const setInitFields = (fields) => {
+    dispatch(setFields({ fields }));
+  }
+
+  const emptyFields = () => {
+    dispatch(setFields({ fields: [] }));
+  }
+
+  const emptyEditor = () => {
+    dispatch(onEmptyEditor())
+  };
+
+  const getPersonsByCarnetid = (carnetid) => total.find( elem => elem.id === carnetid )?.persons || [];
 
   const setActiveCarnet = (carnet) => {
     dispatch(setActiveCarnetStore({ activeCarnet: carnet }));
   }
 
+  const disableCarnet = async(carnetid) => {
+    dispatch(setLoading());
+
+    try {
+      const carnet = await CarnetApi.delete(
+        `/api/v1/bussiness/${bussiness.id}/carnets/${carnetid}`
+      );
+      dispatch(setCarnets({ total: carnet.data.data }));
+
+    } catch (error) {
+      dispatch(setErrorMessage(error));
+    }
+  }
+
   return {
     total,
     loading,
-    fields,
+    editor,
     activeCarnet,
     errorMessage,
+    emptyFields,
     setActiveCarnet,
     getPersonsByCarnetid,
     startLoadingCarnet,
     startSavingCarnet,
     updateFields,
+    setInitFields,
+    emptyEditor,
+    disableCarnet
   };
 };

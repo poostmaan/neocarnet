@@ -7,6 +7,10 @@ export const carnetsSlice = createSlice({
     activeCarnet: {},
     loading: false,
     errorMessage: "",
+    editor: {
+      saved: false,
+      fields: []
+    }
   },
   reducers: {
     setCarnets: (state, {payload}) => {
@@ -25,13 +29,21 @@ export const carnetsSlice = createSlice({
       state.loading = true;
     },
     setFields: (state, { payload }) => {
-			state.fields = payload.fields;
+			state.editor.fields = payload.fields;
 		},
+    setSavedCarnet: (state) => {
+      state.editor.saved = true;
+    },
 		onLogoutCarnet: (state) => {
-			state.fields = [];
 			state.loading = false; 
 			state.errorMessage = null;
-		}
+		},
+    onEmptyEditor: (state) => {
+      state.editor = {
+        saved: false,
+        fields: []
+      }
+    }
   }
 });
 
@@ -41,5 +53,7 @@ export const {
   setErrorMessage,
   setFields,
   setLoading,
-  onLogoutCarnet
+  setSavedCarnet,
+  onLogoutCarnet,
+  onEmptyEditor
 } = carnetsSlice.actions;

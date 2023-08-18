@@ -84,6 +84,9 @@ export const CarnetBox = ({ carnet }) => {
             <Button size="small" color="inherit" variant="outlined" onClick={ () => setActiveCarnet(carnet) }>
               Ver mas
             </Button>
+            <Button size="small" color="inherit" variant="outlined" onClick={ () => { disableCarnet(id) } }>
+              Deshabilitar
+            </Button>
           </AppLink>
         </FiCardActions>
       </FiCard>

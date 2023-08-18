@@ -1,41 +1,35 @@
-import { DashboardLayout } from "../layouts";
+import { DashboardLayout } from "../../layouts";
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
-import { Box, Grid, Button, Typography, Alert, AlertTitle, Breadcrumbs } from "@mui/material";
-import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
-import StayPrimaryLandscapeIcon from "@mui/icons-material/StayPrimaryLandscape";
-import StayPrimaryPortraitIcon from "@mui/icons-material/StayPrimaryPortrait";
+import { Box, Grid, Button, Typography} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useCarnetsStore } from '../../hooks';
-import { ChipFields } from "../components";
-import { width } from "@mui/system";
-import { AppLink } from "../../components";
+import { useCarnetsStore } from '../../../hooks';
+import { AppLink, DefaultSnackbar } from "../../../components";
+import { EditorControlsSidebar, TextOptions } from "./components";
 
-export const CarnetPage = () => {
-  const fileInputRef = useRef();
-
+export const CarnetEditor = () => {
+  
   const canvasRef = useRef(null)
 
   const {
     startSavingCarnet,
-    startLoadingCarnet,
     activeCarnet,
-    fields: currentFields ,
+    editor,
+    emptyEditor,
+    emptyFields,
     loading
   } = useCarnetsStore();
 
-  //** Extraer de algun lado */
+  //** Extraer de algun lado de la base datos*/
   const fields = ["nombre", "cedula", "cargo"]; 
-  const fieldsInUse = activeCarnet?.fields?.split(",") || []; 
-
+  
   const [svg, setSvg] = useState({})
   const [renderedCarnet, setRenderedCarnet] = useState("");
 
   const handleExportSvg = () => {
     const { svgCode, json } = svg;
 
-    console.log(svgCode);
-    let fields = currentFields.toString();
+    let fields = editor.fields.toString();
     startSavingCarnet({ contentsvg: svgCode, contentjson: json, fields })
   }
 
@@ -63,23 +57,15 @@ export const CarnetPage = () => {
   </svg>`;
 
   useEffect(() => {
-    startLoadingCarnet();
-  }, [])
-  
-
-  useEffect(() => {
-    var $ = function (id) {
-      return document.getElementById(id);
-    };
   
     /**
-     * @param {texts} Array 
+     * @description Add a text into the canvas
+     * @param Array texts
      */
     function addText(texts = []) {
       let textsInstances = texts.map(text => new fabric.Text(text, { top: 100, id: text }));
       textsInstances.forEach(textInstance => {
         return textInstance.on('mousedown', function(options) {  
-          console.log('Hiciste clic en el objeto de texto', options);
           activeText = options.target.id;
           // Aquí puedes realizar acciones adicionales al hacer clic en el objeto
         });
@@ -88,27 +74,32 @@ export const CarnetPage = () => {
       canvas.add(...textsInstances);
     }
 
+    /**
+     * @description Delete a text in a canvas
+     * @param Array texts 
+     */
     function removeText(texts = []) {
 
-      const textObjects = texts.map(text => {
-        var objects = canvas.getObjects();
-  
-      // Filtrar los objetos y encontrar el objeto por su identificador
-        var myText = objects.find(function(object) {
-          return object.id === text;
-        });
-
+      texts.map(text => {
+        let objects = canvas.getObjects();
+        let myText = objects.find(object => object.text === text);
         canvas.remove(myText);
       });
 
-
       canvas.renderAll();
+
     }
   
+    /**
+     * 
+     * @param String option 
+     * @param FabricInstance canvas 
+     * @param String value 
+     * @returns 
+     */
     function changeText(option, canvas, value = '') {
   
       if(activeText === '') {
-        console.log('no hay nada seleccionado')
         return; 
       }
   
@@ -120,8 +111,6 @@ export const CarnetPage = () => {
         'fontColor': {'fill': value}
       }
   
-      // newText = canvas.getItemById(activeText);
-  
       // Obtener todos los objetos del lienzo
       var objects = canvas.getObjects();
   
@@ -131,8 +120,6 @@ export const CarnetPage = () => {
       });
   
       const prop = obj[option] || {}
-  
-      console.log(myText)
   
       myText.set(prop);  
       canvas.renderAll();
@@ -146,10 +133,9 @@ export const CarnetPage = () => {
     }
 
     function toggleField(field) {
-      console.log(field)
+      console.log('agregando evento a ', field)
       const elem = document.getElementById(field)
       if(!elem) return;
-      console.log(elem)
 
       elem.addEventListener("click", function() {
         if([...this.classList].includes("chip-active")) {
@@ -167,7 +153,7 @@ export const CarnetPage = () => {
     var canvas = new fabric.Canvas(canvasRef.current);
     fabric.Object.prototype.transparentCorners = false;
 
-    if(activeCarnet.id) {
+    if(!!activeCarnet.contentjson) {
 
       // ! Codigo para cargar en el canvas un SVG
 
@@ -202,37 +188,12 @@ export const CarnetPage = () => {
       })
 
     } else {
-      // TODO: DEBEN SER EXTRAIDOS DE LA BASE DE DATOS
-      // const texts = addText(["nombre", "cedula", "accion"]);
-  
-      // let rect = new fabric.Rect({
-      //   left: 100,    // Posición izquierda del rectángulo
-      //   top: 100,     // Posición superior del rectángulo
-      //   width: 100,   // Ancho del rectángulo
-      //   height: 100,  // Altura del rectángulo
-      //   fill: '#ddd'  // Color de relleno del rectángulo
-      // });
-  
-      // // Crear un nuevo texto
-      // let text = new fabric.Text('foto', {
-      //   fontSize: 20,                      // Tamaño de fuente del texto
-      //   fill: 'black',                     // Color de relleno del texto
-      //   left: rect.left + rect.width / 2,  // Posición horizontal centrada
-      //   top: rect.top + rect.height / 2,   // Posición vertical centrada
-      //   originX: 'center',                 // Origen X centrado
-      //   originY: 'center'                  // Origen Y centrado
-      // });
 
-      // let group = new fabric.Group([rect, text], {
-      //   left: rect.left,
-      //   top: rect.top
-      // });
-      // canvas.add(group);
       fabric.Image.fromURL('https://neocarnets.neoaplicaciones.com/carnets/iconos/default.png', function(img) {
         // Configurar propiedades de la imagen
         img.set({
-          left: 100,
-          top: 100,
+          left: 60,
+          top: 50,
           width: 200,
           height: 200
         });
@@ -240,6 +201,7 @@ export const CarnetPage = () => {
         // Añadir la imagen al lienzo
         canvas.add(img);
       });
+
     }
 
     let addBackgroundbtn = document.getElementById("addBackgroundbtn");
@@ -267,7 +229,7 @@ export const CarnetPage = () => {
       value.addEventListener('click', () => changeText(key, canvas))
     }
 
-    fields.forEach(field => toggleField(field));
+    fields.forEach(field =>toggleField(field));
     
     // * Cambiar la fuente
     document.querySelector('#fontSelector')
@@ -310,7 +272,6 @@ export const CarnetPage = () => {
           renderedCarnet = renderedCarnet.replace(regex, cambiar[field]);
         });
 
-        console.log(renderedCarnet);
 
         setRenderedCarnet( renderedCarnet );
       }
@@ -324,37 +285,24 @@ export const CarnetPage = () => {
     }))
    
     
-  }, [])
-  const properties = { margin: 1 };
+  }, [activeCarnet])
+
 
   return (
-    <DashboardLayout nameModule="Editar carnet" properties={properties}>
+    <DashboardLayout nameModule="Editar carnet" properties={{ margin: 1 }}>
+
+      {
+        editor.saved && <DefaultSnackbar message="Guardado con exito" alertType="success"/>
+      }
+
       <AppLink path="/dashboard/persons">
-        <Button><ArrowBackIcon /> Volver</Button>
+        <Button onClick={ emptyEditor }><ArrowBackIcon /> Volver</Button>
       </AppLink>
+
       <Grid container sx={{ height: 'calc(100vh - 10vh)'}}>
 
         <Grid item md={9}>
-          <button id="bold"><b>N</b></button>
-          <button id="italic"><i>I</i></button>
-          <button id="underline"><u>U</u></button>
-          &nbsp;
-          Fuente: 
-          &nbsp;
-          <select id="fontSelector">
-            <option value="Arial">Arial</option>
-            <option value="Helvetica">Helvetica</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Verdana">Verdana</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Impact">Impact</option>
-            <option value="Comic Sans MS">Comic Sans MS</option>
-          </select>
-          &nbsp;
-          Color:
-          &nbsp;
-          <input type="color" id="fontColor"/>
+          <TextOptions />
           <Box
             sx={{
               display: "flex",
@@ -378,63 +326,11 @@ export const CarnetPage = () => {
           </Box>
         </Grid>
         <Grid item md={3}>
-          <input
-            type="file"
-            name="subirFondo"
-            id="subirFondo"
-            style={{ display: "none" }}
-            ref={fileInputRef}
-          />
-          <Typography>Sugerencia de fondos: </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              mb: 2,
-            }}
-          >
-            {imageTemplates.map((img) => (
-              <img src={img} key={img} width="65" height="95" alt="image" className="carnetTemplates pointer"/>
-            ))}
-          </Box>
-
-          <Box
-            sx={{mb: 1}}
-          >
-            { 
-            
-            fields.map((field) => (
-              <ChipFields field={field} active={ fieldsInUse.includes(field) } />
-            ))
-            
-            }
-          </Box>
-          
-          <Button
-            id="addBackgroundbtn"
-            onClick={() => {
-              fileInputRef.current.click();
-            }}
-            variant="outlined"
-            fullWidth
-            sx={{ mb: 1 }}
-          >
-            Agregar fondo personalizado
-          </Button>
-
-          <a href="/w/dashboard/carnets#render">
-            <Button id="previsualise" variant="outlined" fullWidth sx={{mb: 1}}>
-                  Previsualizar
-            </Button>
-          </a>
-
-          <Button id="toSvgBtn" variant="outlined" fullWidth onClick={handleExportSvg} disabled={loading}>
-            Guardar
-          </Button>
-
+          <EditorControlsSidebar handleExportSvg={handleExportSvg}/>
         </Grid>
       </Grid>
 
-      <a href="/w/dashboard/carnets#editor" style={{ textDecoration: "none", color: "gray"}}>
+      <a href="/w/dashboard/editor#design" style={{ textDecoration: "none", color: "gray"}}>
         <Button>
           <ArrowBackIcon />
           &nbsp;
@@ -448,8 +344,3 @@ export const CarnetPage = () => {
     </DashboardLayout>
   );
 };
-
-const imageTemplates = [
-  "https://neocarnets.neoaplicaciones.com/assets/bussinessTemplates/fvb.png",
-  "https://neocarnets.neoaplicaciones.com/assets/bussinessTemplates/asturiano.png",
-];
