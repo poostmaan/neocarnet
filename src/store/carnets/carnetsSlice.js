@@ -34,6 +34,18 @@ export const carnetsSlice = createSlice({
     setSavedCarnet: (state) => {
       state.editor.saved = true;
     },
+    toggleCarnetStatus: (state, { payload }) => {
+      // Toma todos los carnets
+      state.total = state.total.map(carnet => {
+        // Consigue el carnet filtrado por id
+        if(carnet.id === payload.carnetid) {
+          // Lo establece como deshabilitado
+          carnet.isDisabled = payload.isDisabled;
+        }
+        return carnet;
+      });
+      state.loading = false;
+    },
 		onLogoutCarnet: (state) => {
 			state.loading = false; 
 			state.errorMessage = null;
@@ -54,6 +66,7 @@ export const {
   setFields,
   setLoading,
   setSavedCarnet,
+  toggleCarnetStatus,
   onLogoutCarnet,
   onEmptyEditor
 } = carnetsSlice.actions;

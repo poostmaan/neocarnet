@@ -7,6 +7,7 @@ import {
   setFields,
   setLoading,
   setSavedCarnet,
+  toggleCarnetStatus
 } from "../store/carnets";
 import CarnetApi from "../api/CarnetApi";
 
@@ -99,10 +100,28 @@ export const useCarnetsStore = () => {
     dispatch(setLoading());
 
     try {
-      const carnet = await CarnetApi.delete(
-        `/api/v1/bussiness/${bussiness.id}/carnets/${carnetid}`
+      await CarnetApi.patch(
+        `/api/v1/bussiness/${bussiness.id}/carnets/${carnetid}`,
+        { isDisabled: 1 }
       );
-      dispatch(setCarnets({ total: carnet.data.data }));
+
+      dispatch( toggleCarnetStatus({ carnetid, isDisabled: 1 }) );
+
+    } catch (error) {
+      dispatch(setErrorMessage(error));
+    }
+  }
+
+  const enableCarnet = async(carnetid) => {
+    dispatch(setLoading());
+
+    try {
+      await CarnetApi.patch(
+        `/api/v1/bussiness/${bussiness.id}/carnets/${carnetid}`,
+        { isDisabled: 0 }
+      );
+
+      dispatch( toggleCarnetStatus({ carnetid, isDisabled: 0 }) );
 
     } catch (error) {
       dispatch(setErrorMessage(error));
@@ -123,6 +142,7 @@ export const useCarnetsStore = () => {
     updateFields,
     setInitFields,
     emptyEditor,
-    disableCarnet
+    disableCarnet,
+    enableCarnet
   };
 };

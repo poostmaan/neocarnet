@@ -8,7 +8,6 @@ import {
 import { FiCard, FiCardActions, FiCardContent, FiCardMedia } from "./";
 import { AppLink } from "../../components";
 import { useAuthStore, useCarnetsStore } from '../../hooks';
-
 const useStyles = makeStyles({
   container: {
     display: "flex",
@@ -49,10 +48,34 @@ const useStyles = makeStyles({
 
 export const CarnetBox = ({ carnet }) => {
 
-  const { id, title, description } = carnet;
-  const { setActiveCarnet } = useCarnetsStore();
+  const { id, title, description, isDisabled } = carnet;
+  const { setActiveCarnet, disableCarnet, enableCarnet } = useCarnetsStore();
 
   const classes = useStyles();
+
+  const enabledCarnetButtons = (
+    <>
+      <AppLink
+        path={`/dashboard/persons?id=${btoa(id)}`}
+        color="white"
+      >
+        <Button size="small" color="inherit" variant="outlined" onClick={ () => setActiveCarnet(carnet) }>
+          Ver mas
+        </Button>
+      </AppLink>
+      <Button size="small" color="inherit" variant="outlined" onClick={ () => { disableCarnet(id) } }>
+        Deshabilitar
+      </Button>
+    </>
+  );
+
+  const disabledCarnetButtons = (
+    <>
+      <Button size="small" color="inherit" variant="outlined" onClick={ () => enableCarnet(id) }>
+        Habilitar
+      </Button>
+    </>
+  )
 
   return (
     <Grid item xs={3}>
@@ -77,17 +100,11 @@ export const CarnetBox = ({ carnet }) => {
           </Typography>
         </FiCardContent>
         <FiCardActions className={classes.fiCardContent}>
-          <AppLink
-            path={`/dashboard/persons?id=${btoa(id)}`}
-            color="white"
-          >
-            <Button size="small" color="inherit" variant="outlined" onClick={ () => setActiveCarnet(carnet) }>
-              Ver mas
-            </Button>
-            <Button size="small" color="inherit" variant="outlined" onClick={ () => { disableCarnet(id) } }>
-              Deshabilitar
-            </Button>
-          </AppLink>
+          { 
+            isDisabled == 0 
+              ? enabledCarnetButtons
+              : disabledCarnetButtons
+          }
         </FiCardActions>
       </FiCard>
     </Grid>

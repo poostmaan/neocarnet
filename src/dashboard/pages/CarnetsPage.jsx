@@ -3,6 +3,8 @@ import {
   Grid,
   Typography,
   Card,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -18,9 +20,18 @@ export const CarnetsPage = () => {
     startLoadingCarnet();
   }, [])
   
+  const infoAlert = (
+    <Alert severity="info" sx={{ mb: 1 }}>
+      <AlertTitle>Información</AlertTitle>
+      Comienza a crear tus carnets
+    </Alert>
+  );
 
   return (
     <DashboardLayout nameModule="Carnet">
+
+      { carnets.length == 0 && infoAlert }
+
       <Grid container rowSpacing={1}>
         <Grid item xs={3}>
           <Card sx={{ width: 258, height: 400, shadow: 2, backgroundColor: "#eee" }} className="pointer">
