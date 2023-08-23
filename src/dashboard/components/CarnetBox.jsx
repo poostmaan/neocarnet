@@ -59,11 +59,12 @@ export const CarnetBox = ({ carnet }) => {
         path={`/dashboard/persons?id=${btoa(id)}`}
         color="white"
       >
-        <Button size="small" color="inherit" variant="outlined" onClick={ () => setActiveCarnet(carnet) }>
-          Ver mas
+        <Button size="large" color="inherit" variant="outlined" onClick={ () => setActiveCarnet(carnet) }>
+          Editar
         </Button>
       </AppLink>
-      <Button size="small" color="inherit" variant="outlined" onClick={ () => { disableCarnet(id) } }>
+      &nbsp;
+      <Button size="large" color="inherit" variant="outlined" onClick={ () => { disableCarnet(id) } }>
         Deshabilitar
       </Button>
     </>
@@ -71,7 +72,7 @@ export const CarnetBox = ({ carnet }) => {
 
   const disabledCarnetButtons = (
     <>
-      <Button size="small" color="inherit" variant="outlined" onClick={ () => enableCarnet(id) }>
+      <Button size="large" color="inherit" variant="outlined" onClick={ () => enableCarnet(id) }>
         Habilitar
       </Button>
     </>
