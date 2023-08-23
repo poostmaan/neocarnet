@@ -1,6 +1,6 @@
 import { DashboardLayout } from '../layouts';
 import React, { useState } from "react";
-import { Alert, AlertTitle, Box, Breadcrumbs, Button, Grid, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Breadcrumbs, Button, Grid, IconButton, Typography } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MUIDataTable from 'mui-datatables';
 import { useCarnetsStore, usePersons } from '../../hooks';
@@ -8,6 +8,7 @@ import MUIModal from '../components/MuiModal';
 import ContentModal from '../components/ContentModal';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { AppLink } from '../../components';
+import CloseIcon from '@mui/icons-material/Close';
 import AddCardIcon from '@mui/icons-material/AddCard';
 
 export function ControlPersons() {
@@ -136,7 +137,7 @@ export function ControlPersons() {
 
   
   return (
-    <DashboardLayout nameModule="Personas">
+    <DashboardLayout nameModule="Carnets" properties={{ margin: 2 }}>
       {
         personsByCarnetid.length === 0
         ? 
@@ -155,11 +156,25 @@ export function ControlPersons() {
         : 
         (
           <>
-            <Breadcrumbs aria-label="breadcrumb">
+            <Breadcrumbs aria-label="breadcrumb" separator="›" sx={{fontSize: 11, mb: 1}}>
               <AppLink path="/dashboard/carnets" label="Carnets" />
-              <Typography color="text.primary">Carnet Dpto. Sistemas</Typography>
+              <Typography color="text.primary">{ activeCarnet.title }</Typography>
             </Breadcrumbs>
-            <Alert severity="info">
+            <Alert 
+              // action={
+              //   <IconButton
+              //     aria-label="close"
+              //     color="inherit"
+              //     size="small"
+              //     onClick={() => {
+              //       setOpen(false);
+              //     }}
+              //   >
+              //     <CloseIcon fontSize="inherit" />
+              //   </IconButton>
+              // }
+              severity="info"
+            >
               <AlertTitle>Información</AlertTitle>
               En esta sección puedes agregar a tus empleados <strong>¡solo subiendo un CSV!</strong>
             </Alert>

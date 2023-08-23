@@ -77,6 +77,7 @@ export const CarnetsPage = () => {
         component="form"
         onSubmit={handleSubmit}
         noValidate 
+        sx={{ width: '100%' }}
       >
         <Typography variant="h6">Agregar nuevo carnet</Typography>
         <TextField
