@@ -2,12 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   onEmptyEditor,
   setActiveCarnet as setActiveCarnetStore,
+  setCarnet,
   setCarnets,
   setErrorMessage,
   setFields,
   setLoading,
   setSavedCarnet,
-  toggleCarnetStatus
+  toggleCarnetStatus,
+  toggleModal
 } from "../store/carnets";
 import CarnetApi from "../api/CarnetApi";
 
@@ -20,12 +22,17 @@ export const useCarnetsStore = () => {
     errorMessage, 
     activeCarnet, 
     editor, 
-    loading 
+    loading,
+    modalIsOpened, 
   } = useSelector(
     (state) => state.carnets
   );
 
   const { bussiness } = useSelector((state) => state.auth);
+
+  const toggleModal_ = () => {
+    dispatch(toggleModal());
+  }
 
   const startLoadingCarnet = async () => {
     dispatch(setLoading());
@@ -60,6 +67,23 @@ export const useCarnetsStore = () => {
       dispatch(setErrorMessage(error)); 
     }
   };
+
+  const startCreatingCarnet = async(newCarnet) => {
+    dispatch(setLoading());
+
+    try {
+      const createdCarnet = await CarnetApi.post(
+        `/api/v1/bussiness/${bussiness.id}/carnets`,
+        newCarnet
+      );
+
+      dispatch( setCarnet({ newCarnet: createdCarnet.data.data }));
+      dispatch( toggleModal() );
+
+    } catch (error) {
+      dispatch(setErrorMessage(error)); 
+    }
+  }
 
   const updateFields = async (field) => {
     console.log(editor.fields, field);
@@ -129,20 +153,25 @@ export const useCarnetsStore = () => {
   }
 
   return {
+    // Vars
     total,
     loading,
     editor,
     activeCarnet,
     errorMessage,
+    modalIsOpened,
+    // Functions
+    disableCarnet,
+    emptyEditor,
     emptyFields,
-    setActiveCarnet,
+    enableCarnet,
     getPersonsByCarnetid,
+    setActiveCarnet,
+    setInitFields,
+    startCreatingCarnet,
     startLoadingCarnet,
     startSavingCarnet,
+    toggleModal_,
     updateFields,
-    setInitFields,
-    emptyEditor,
-    disableCarnet,
-    enableCarnet
   };
 };

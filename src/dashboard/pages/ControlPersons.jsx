@@ -15,6 +15,18 @@ export function ControlPersons() {
   const { getPersonsByCarnetid, activeCarnet } = useCarnetsStore();
   const personsByCarnetid = getPersonsByCarnetid(activeCarnet.id);
 
+  const [open, setOpen] = useState(false);
+
+	const handleOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+    // cleanPeopleMessages();
+		// cleanErrorMessage();
+	};
+
   const state = {
     downloadFile: true,
   };
@@ -161,7 +173,10 @@ export function ControlPersons() {
                   </Button>
                 </AppLink>
                 &nbsp;
-                <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />} >
+                <Button variant="contained" onClick={handleOpen} startIcon={<PersonAddIcon />}>
+                  Cargar Personas
+                </Button>
+                <MUIModal handleClose={handleClose} open={open}>
                   <ContentModal />
                 </MUIModal>
               </Grid>

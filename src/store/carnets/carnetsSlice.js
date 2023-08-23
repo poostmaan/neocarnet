@@ -10,11 +10,16 @@ export const carnetsSlice = createSlice({
     editor: {
       saved: false,
       fields: []
-    }
+    },
+    modalIsOpened: false,
   },
   reducers: {
     setCarnets: (state, {payload}) => {
       state.total = payload.total;
+      state.loading = false;
+    },
+    setCarnet: (state, {payload}) => {
+      state.total = [...state.total, payload.newCarnet];
       state.loading = false;
     },
     setActiveCarnet: (state, { payload }) => {
@@ -55,18 +60,23 @@ export const carnetsSlice = createSlice({
         saved: false,
         fields: []
       }
+    },
+    toggleModal: (state) => {
+      state.modalIsOpened = !state.modalIsOpened;
     }
   }
 });
 
 export const {
+  onEmptyEditor,
+  onLogoutCarnet,
   setActiveCarnet,
+  setCarnet,
   setCarnets,
   setErrorMessage,
   setFields,
   setLoading,
   setSavedCarnet,
   toggleCarnetStatus,
-  onLogoutCarnet,
-  onEmptyEditor
+  toggleModal,
 } = carnetsSlice.actions;
