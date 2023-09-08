@@ -12,7 +12,7 @@ export const EditorControlsSidebar = ({ handleExportSvg }) => {
     loading
   } = useCarnetsStore();
 
-  const fields = ["nombre", "cedula", "cargo"]; 
+  const fields = ["nombre apellido", "cedula", "cargo"]; 
 
   const fileInputRef = useRef();
   const fieldsInUse = activeCarnet?.fields?.split(",") || []; 

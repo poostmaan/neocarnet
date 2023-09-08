@@ -15,7 +15,7 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { useAuthStore, usePersons } from "../../hooks";
+import { useAuthStore, useCarnetsStore, usePersons } from "../../hooks";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { DefaultSnackbar } from "../../components/DefaultSnackbar";
@@ -30,6 +30,8 @@ const ContentModal = () => {
     uploadPersons,
     errorMessage,
   } = usePersons();
+
+  const { activeCarnet } = useCarnetsStore();
 
   const handleInputFile = (e) => {
     if (!e.target.files) {
@@ -114,6 +116,12 @@ const ContentModal = () => {
                   type="hidden"
                   name="bussinessid"
                   value={bussiness.id}
+                  hidden
+                />
+                <input 
+                  type="hidden"
+                  name="carnetid"
+                  value={activeCarnet.id}
                   hidden
                 />
               </Button>

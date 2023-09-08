@@ -13,7 +13,12 @@ import AddCardIcon from '@mui/icons-material/AddCard';
 
 export function ControlPersons() {
 
-  const { getPersonsByCarnetid, activeCarnet } = useCarnetsStore();
+  const { 
+    modalIsOpened,
+    activeCarnet,
+    getPersonsByCarnetid,
+    toggleModal_
+  } = useCarnetsStore();
   const personsByCarnetid = getPersonsByCarnetid(activeCarnet.id);
 
   const [open, setOpen] = useState(false);
@@ -135,6 +140,7 @@ export function ControlPersons() {
     },
   };
 
+  useEffect()
   
   return (
     <DashboardLayout nameModule="Carnets" properties={{ margin: 2 }}>
@@ -148,7 +154,10 @@ export function ControlPersons() {
               </Box>
               <Typography >Gestiona y controla los tu personal subiendo sus datos aqui </Typography>
               <Typography variant="caption" sx={{ mb: 2}}>Descarga la plantilla, rellenala con la informacion de tu personal y carga en NeoCarnets</Typography>
-              <MUIModal buttonName="Cargar personas" icon={<PersonAddIcon />}>
+              <Button variant="contained" onClick={toggleModal_} startIcon={<PersonAddIcon />}>
+                Cargar Personas
+              </Button>
+              <MUIModal icon={<PersonAddIcon />} open={modalIsOpened} handleClose={toggleModal_}>
                 <ContentModal />
               </MUIModal>
           </Box>
@@ -188,10 +197,10 @@ export function ControlPersons() {
                   </Button>
                 </AppLink>
                 &nbsp;
-                <Button variant="contained" onClick={handleOpen} startIcon={<PersonAddIcon />}>
+                <Button variant="contained" onClick={toggleModal_} startIcon={<PersonAddIcon />}>
                   Cargar Personas
                 </Button>
-                <MUIModal handleClose={handleClose} open={open}>
+                <MUIModal handleClose={toggleModal_} open={modalIsOpened}>
                   <ContentModal />
                 </MUIModal>
               </Grid>

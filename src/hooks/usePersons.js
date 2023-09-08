@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import CarnetApi from "../api/CarnetApi";
 import { setBussinessPersons, uploadPeople, cleanError, cleanPeople, setErrorMessage, setLoading } from "../store/persons";
-import axios from "axios";
+import { toggleModal } from "../store/carnets";
 
 export const usePersons = () => {
 
@@ -36,17 +36,22 @@ export const usePersons = () => {
 		dispatch(setLoading());
 
 		try {
-			// console.log("asddd");
-			// const LocalApi = axios.create({
-			// 	baseURL: "http://127.0.0.1:8080/neoCARNETSLocal"
-			// })
+			// * Esta no pertenece al ambito de slim
 
-			const dataSaved = await CarnetApi.post('/excel/uploadPeople.php', data); 
-			const refreshData = await CarnetApi.get(`/api/bussiness/${bussinessid}/persons`)
+			console.log(Object.fromEntries(data), bussinessid);
+			
+			const dataSaved = await CarnetApi.post('/excel2/uploadPeople.php', data); 
+			const bussinessPersonsData = await CarnetApi.get(`/api/bussiness/${bussinessid}/persons`)
 
 			dispatch(cleanError());
 			dispatch(uploadPeople({ uploadedPeople: dataSaved.data.response }));
-			dispatch(setBussinessPersons({ bussinessPersons: refreshData.data.data }))
+
+			const bussinessPersons = bussinessPersonsData.data.data;
+			dispatch(setBussinessPersons({ bussinessPersons }));
+			dispatch( toggleModal() );
+
+			
+
 		} catch (error) {
 			let errorMessage = error.response.data.response
 			dispatch(cleanPeople());

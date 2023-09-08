@@ -21,12 +21,12 @@ export const CarnetEditor = () => {
   } = useCarnetsStore();
 
   //** Extraer de algun lado de la base datos*/
-  const fields = ["nombre", "cedula", "cargo"]; 
+  const fields = ["nombre apellido", "cedula", "cargo"]; 
   
   const [svg, setSvg] = useState({})
   const [renderedCarnet, setRenderedCarnet] = useState("");
 
-  const handleExportSvg = () => {
+  const handleExportSvg = () => { 
     const { svgCode, json } = svg;
 
     let fields = editor.fields.toString();
@@ -62,8 +62,8 @@ export const CarnetEditor = () => {
      * @description Add a text into the canvas
      * @param Array texts
      */
-    function addText(texts = []) {
-      let textsInstances = texts.map(text => new fabric.Text(text, { top: 100, id: text }));
+    function addText(texts = [], props = { top: 100 } ) {
+      let textsInstances = texts.map(text => new fabric.Text(text, { id: text, fontSize: 18, ...props }));
       textsInstances.forEach(textInstance => {
         return textInstance.on('mousedown', function(options) {  
           activeText = options.target.id;
@@ -72,6 +72,16 @@ export const CarnetEditor = () => {
       })
   
       canvas.add(...textsInstances);
+    }
+
+    function addSingleText(text = "", props = { top: 100 } ) {
+      let textsInstances = new fabric.Text(text, { id: text, fontSize: 18, ...props });
+      textsInstances.on('mousedown', function(options) {  
+        activeText = options.target.id;
+        // Aquí puedes realizar acciones adicionales al hacer clic en el objeto
+      })
+  
+      canvas.add(textsInstances);
     }
 
     /**
